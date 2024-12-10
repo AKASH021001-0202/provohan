@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img{
+  width: 100%;
+}
+
+.card {
+  box-shadow: 0px 0px 5px #ddd;
+ 
+}
+.bg-\[url\(\'https\:\/\/i\.ibb\.co\/vDRhZP0\/df90638e259a358bb56c293fc9f072d9\.png\'\)\] {
+  background-image: url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png');
+  border-radius: 50px 0 0 50px;
+}
+.aligncenter_h {
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.google_footer{
+  width: 200px;
+  height: 67px;
+}
