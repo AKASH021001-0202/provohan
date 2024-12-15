@@ -7,13 +7,87 @@
   padding: 0;
   box-sizing: border-box;
 }
+html{
+  overflow-x: hidden;
+}
 img{
   width: 100%;
 }
-
+.slider-bgimg {
+ 
+  background: url(src/assets/slider.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .card {
   box-shadow: 0px 0px 5px #ddd;
  
+}.buy_sell{
+  background: url('https://i.ibb.co/5KqXxNJ/image-2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 673px;
+}
+.innerbox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: start;
+ 
+  gap: 11px;
+}
+.buy_sell img {
+  width: 43%;
+  height: 100px;
+  object-fit: contain;
+}
+/* Custom React-Slick Dots */
+.slick-dots {
+  bottom: 10px; /* Position dots closer to the carousel */
+}
+
+.slick-dots li button:before {
+  font-size: 12px; /* Adjust dot size */
+  color: #ccc; /* Default dot color */
+  opacity: 0.7; /* Slight transparency */
+  transition: color 0.3s ease;
+}
+
+.slick-dots li.slick-active button:before {
+  background: #A439AD; /* Active dot color */
+  content: '';
+  color:#fff;
+	
+  	width: 10px;
+	height: 3px;
+  opacity: 1; /* Fully visible */
+}
+
+
+.slick-dots li.slick-active button {
+  color: #fff;
+  
+  border: none;
+}
+.slick-dots li button:before {
+  font-family: 'slick';
+  font-size: 16px;
+  padding: 3px 3px;
+	border-radius: 0;
+	width: 5px;
+	height: 3px;
+
+	line-height: 30px;
+  content: '';
+  text-align: center;
+  background: #9e9e9e;
+  opacity: .25;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .bg-\[url\(\'https\:\/\/i\.ibb\.co\/vDRhZP0\/df90638e259a358bb56c293fc9f072d9\.png\'\)\] {
   background-image: url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png');

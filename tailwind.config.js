@@ -9,6 +9,9 @@ export default {
         btn_location: "#7E3391",
         topbar: "#5E0075",
         form_border: "#71717A",
+        tab_section:'#272727 ',
+        backgro_status: "#4933911A",
+
       },
       width: {
         search: "480px",
