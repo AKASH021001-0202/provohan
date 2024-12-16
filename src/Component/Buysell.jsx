@@ -24,7 +24,7 @@ const Buysell = () => {
             </div>
 
             {/* Second Section */}
-            <div className="flex align-center bg-[#493391] justify-center p-5 gap-5 min-h-[230px]">
+            <div className="flex align-center bg-[#493391] g justify-center p-5 gap-5 min-h-[230px]">
               <img src="https://i.ibb.co/rbq8tRL/fi-7435299.png" className= " -mt-11 max-[600px]:m-0" alt="" />
               <div className="innerbox">
                 <h3 className="text-white text-2xl font-bold">
