@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html{
+  overflow-x: hidden;
+}
+img{
+  width: 100%;
+}
+.slider-bgimg {
+ 
+  background: url(src/assets/slider.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.card {
+  box-shadow: 0px 0px 5px #ddd;
+ 
+}.buy_sell{
+  background: url('https://i.ibb.co/5KqXxNJ/image-2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 673px;
+}
+.innerbox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: start;
+ 
+  gap: 11px;
+}
+.buy_sell img {
+    width: 23%;
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    
+}
+/* Custom React-Slick Dots */
+.slick-dots {
+  bottom: 10px; /* Position dots closer to the carousel */
+}
+.slick-dots li.slick-active button:before {
+  background: #A439AD;
+  content: '';
+  color: #fff;
+  width: 20px;
+  height: 3px;
+  opacity: 1;
+  border-radius: 20px;
+  margin-left: -7px;
+}
+
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 20px;
+  margin: 0px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slick-dots li.slick-active button {
+  color: #fff;
+  
+  border: none;
+}
+.slick-dots li button:before {
+  font-family: 'slick';
+  font-size: 16px;
+  padding: 3px 3px;
+	border-radius: 0;
+	width: 5px;
+	height: 3px;
+
+	line-height: 30px;
+  content: '';
+  text-align: center;
+  background: #9e9e9e;
+  opacity: .25;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.bg-\[url\(\'https\:\/\/i\.ibb\.co\/vDRhZP0\/df90638e259a358bb56c293fc9f072d9\.png\'\)\] {
+  background-image: url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png');
+  border-radius: 50px 0 0 50px;
+}
+.aligncenter_h {
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.google_footer{
+  width: 200px;
+  height: 67px;
+}
+.client_carousel{
+  clip-path: polygon(100% 0, 100% 100%, 0% 100%, 0 20%);
+}
+.client_logo{
+  width: 40px;
+ padding-right: 5px;
+  height: 100%;
+  object-fit: cover;
+
+  }
+  .border_left{
+    border-left:  1px solid #000;
+    padding-left: 5px;
+  }.vl {
+    border-left: 2px solid #fff;
+    height: 150px;
+  }
+  .v2 {
+    border-left: 1px solid #000000;
+    height: 30px;
+    padding-right: 5px;
+  }
