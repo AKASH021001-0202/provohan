@@ -13,10 +13,10 @@ const Faq = () => {
   return (
     <div>
       <div className="container mx-auto">
-      <div class="flex items-center justify-center pt-10">
-  <hr class="w-36 h-0.5 bg-gray-400 border-0" />
-  <h1 class="text-2xl font-semibold text-current mx-4">FAQs about Used Cars in Chennai</h1>
-  <hr class="w-36 h-0.5 bg-gray-400 border-0" />
+      <div className="flex items-center justify-center pt-10">
+  <hr className="w-36 h-0.5 bg-gray-400 border-0" />
+  <h1 className="text-2xl font-semibold text-current mx-4">FAQs about Used Cars in Chennai</h1>
+  <hr className="w-36 h-0.5 bg-gray-400 border-0" />
 </div>
 
         <div id="accordion-color " className="p-3">

@@ -131,3 +131,84 @@ img{
     height: 30px;
     padding-right: 5px;
   }
+/* Hide the original checkbox */
+.form-checkbox[type="checkbox"] {
+  display: none;
+}
+
+/* Style for the custom checkbox */
+.custom-checkbox {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #7e3391;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Style for the custom checkmark */
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background-color: #7e3391;
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+/* Show the checkmark when the checkbox is checked */
+input[type="checkbox"]:checked + .custom-checkbox::after {
+  opacity: 1;
+}
+/* General styling for the slider */
+input[type="range"] {
+  -webkit-appearance: none; /* Remove default styling in WebKit browsers */
+  height: 5px; /* Adjust track height */
+  background: #7e3391; /* Track background */
+  border-radius: 5px; /* Rounded track */
+  outline: none; /* Remove focus outline */
+  transition: background 0.3s;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default thumb styling */
+  appearance: none; /* For non-WebKit browsers */
+  width: 10px; /* Thumb width */
+  height: 10px; /* Thumb height */
+  background: #7e3391; /* Thumb color */
+  border-radius: 50%; /* Circular thumb */
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  background: #7e3391; /* Change thumb color on hover */
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #d8d8d8 0%, #e0e0e0 100%);
+  border-radius: 5px; /* Match track roundness */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #7e3391;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-track {
+  /* background: linear-gradient(to right, #ffffff 0%, #ffffff 100%); */
+  height: 8px;
+  border-radius: 5px;
+}
+
+

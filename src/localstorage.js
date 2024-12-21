@@ -193,7 +193,44 @@ const carData = [
       name: "Kia",
       count: "120+ Vehicle"
     }
+
   ];
+  const cardsvehicle =[
+{
+  id: "1",
+  img:"https://i.ibb.co/NLhXyNQ/Racing-Blue-761x-1.png",
+  heading:"Super Bikes",
+  content:"Go to your shipments to see the status of your shipment",
+  url:"#0"
+
+},
+{
+  id: "2",
+  img:"https://i.ibb.co/M1R6JGf/5d4db6e517a689e87c4266f61d77f803-1.png",
+  heading:"Super Luxury Cars",
+  content:"Go to your shipments to see the status of your shipment",
+  url:"#0"
+
+},
+{
+  id: "3",
+  img:"https://i.ibb.co/8Y7grqn/6155-R-r2d004419-large-278409f65334dd30e73f2cafe349c1b7dd10269c-1.png",
+  heading:"Tractor",
+  content:"Go to your shipments to see the status of your shipment",
+  url:"#0"
+
+},
+{
+  id: "4",
+  img:"https://i.ibb.co/VYM6nzT/insaat-jo6f4x1t-1.png",
+  heading:"Lord Trucks",
+  content:"Go to your shipments to see the status of your shipment",
+  url:"#0"
+
+},
+
+
+  ]
   
   const client2 = [
     {
@@ -261,5 +298,133 @@ const carData = [
     },
   ];
 
+const sortOptions = [
+  { name: "Most Popular", href: "#", current: true },
+  { name: "Best Rating", href: "#", current: false },
+  { name: "Newest", href: "#", current: false },
+  { name: "Price: Low to High", href: "#", current: false },
+  { name: "Price: High to Low", href: "#", current: false },
+];
+
+const subCategories = [
+  { name: "Totes", href: "#" },
+  { name: "Backpacks", href: "#" },
+  { name: "Travel Bags", href: "#" },
+  { name: "Hip Bags", href: "#" },
+  { name: "Laptop Sleeves", href: "#" },
+];
+
+const filters = [
+  {
+    id: "color",
+    name: "Color",
+    options: [
+      { value: "red", label: "Red", checked: false },
+      { value: "blue", label: "Blue", checked: false },
+    ],
+  },
+  {
+    id: "size",
+    name: "Size",
+    options: [
+      { value: "small", label: "Small", checked: false },
+      { value: "medium", label: "Medium", checked: true },
+      { value: "large", label: "Large", checked: false },
+    ],
+  },
+];
+const filterConfig = [
+
+  {
+    key: "location",
+    label: "Location",
+    type: "checkbox",
+    searchable: true,
+    options: ["Chennai", "Delhi", "Bangalore", "Hyderabad", "Mumbai"],
+  },
+  {
+    key: "radius",
+    label: "Show within Radius",
+    type: "checkbox",
+    options: [
+      "500kms or less",
+      "1000kms or less",
+      "1500kms or less",
+      "5000kms or less",
+    ],
+  },
+  {
+    key: "make",
+    label: "Make and Model",
+    type: "checkbox",
+    searchable: true,
+    options: ["Honda", "TATA", "Hyundai", "Maruti Suzuki"],
+  },
+  {
+    key: "owners",
+    label: "Number of Owners",
+    type: "checkbox",
+    options: ["First Owner", "Second Owner", "Third Owner", "Fourth Owner & More"],
+  },
+  {
+    key: "transmission",
+    label: "Transmission Type",
+    type: "checkbox",
+    options: ["Automated Manual Transmission", "Automatic", "Manual"],
+  },
+  {
+    key: "kilometers",
+    label: "Kilometers Driven",
+    type: "slider",
+    range: { min: 0, max: 1000000, step: 10000 },
+    keyin:"Km",
+    
+  },
+  {
+    key: "colors",
+    label: "Colors",
+    type: "button",
+    options: [
+      "Beige",
+      "Black",
+      "Blue",
+      "Purple",
+      "Brown",
+      "Gold",
+      "Green",
+      "Red",
+      "Gray",
+      "Maroon",
+      "Orange",
+      "Other",
+    ],
+  },
+  {
+    key: "listingAge",
+    label: "Listing Age",
+    type: "checkbox",
+    options: [
+      "Last Day",
+      "Last 5 Days",
+      "Last 13 Days",
+      "Last 90 Days",
+      "Last 1 Year",
+    ],
+  },
+  {
+    key: "years",
+    label: "Years",
+    type: "slider",
+    range: { min: 1920, max: 2024},
+    keyin:"years"
+  },
+  {
+    key: "fuel",
+    label: "Fuel Type",
+    type: "checkbox",
+    options: ["Petrol", "Diesel", "Petrol + LPG", "Petrol + CNG", "CNG", "LPG"],
+  },
+];
+
   
-export { touchlink ,servicesList,copyrights,carData,client2,client1,faqs };
+export {cardsvehicle, touchlink ,servicesList,copyrights,carData,client2,client1,faqs,filters,subCategories ,sortOptions,filterConfig };

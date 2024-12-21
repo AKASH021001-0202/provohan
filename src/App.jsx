@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import { Home } from "./Pages/Home";
 import Footer from "./Component/Footer";
 import Dummy from "./Component/Dummy";
+import Shop from "./Pages/Shop";
 
 
 
@@ -18,6 +19,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Register" element={<Signup />} />
         <Route path="/otp" element={<OTPVerification />} />
