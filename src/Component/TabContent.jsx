@@ -75,7 +75,7 @@ const TabContent = () => {
                       {/* Internal Image Carousel */}
                       <Slider {...imageSliderSettings}>
                         {car.images.map((img, index) => (
-                          <div key={index} className="w-full h-52">
+                          <div key={index} className="w-full h-52 focus:outline-none">
                             <img
                               src={img}
                               alt={`Car ${index}`}
@@ -153,9 +153,9 @@ const TabContent = () => {
                               <path
                                 d="M3.74548 7.49951C3.74544 11.4878 8.99359 15.7495 8.99359 15.7495C8.99359 15.7495 14.2455 11.4878 14.2455 7.49951C14.2455 4.61787 11.9955 2.24951 8.99359 2.24951C5.99171 2.24951 3.74551 4.6196 3.74548 7.49951Z"
                                 stroke="#18181B"
-                                stroke-width="1.63634"
-                                stroke-linecap="round"
-                                stroke-linejoin="bevel"
+                                strokeWidth="1.63634"
+                                strokeLinecap="round"
+                                strokeLinejoin="bevel"
                               />
                               <rect
                                 x="7.49817"
@@ -164,7 +164,7 @@ const TabContent = () => {
                                 height="3"
                                 rx="1.5"
                                 stroke="#18181B"
-                                stroke-width="1.63634"
+                                strokeWidth="1.63634"
                               />
                             </svg>
 
@@ -206,7 +206,7 @@ const TabContent = () => {
                       {/* Internal Image Carousel */}
                       <Slider {...imageSliderSettings}>
                         {car.images.map((img, index) => (
-                          <div key={index} className="w-full h-52">
+                          <div key={index} className="w-full h-52 focus:outline-none">
                             <img
                               src={img}
                               alt={`Car ${index}`}
@@ -283,9 +283,9 @@ const TabContent = () => {
                               <path
                                 d="M3.74548 7.49951C3.74544 11.4878 8.99359 15.7495 8.99359 15.7495C8.99359 15.7495 14.2455 11.4878 14.2455 7.49951C14.2455 4.61787 11.9955 2.24951 8.99359 2.24951C5.99171 2.24951 3.74551 4.6196 3.74548 7.49951Z"
                                 stroke="#18181B"
-                                stroke-width="1.63634"
-                                stroke-linecap="round"
-                                stroke-linejoin="bevel"
+                                strokeWidth="1.63634"
+                                strokeLinecap="round"
+                                strokeLinejoin="bevel"
                               />
                               <rect
                                 x="7.49817"
@@ -294,7 +294,7 @@ const TabContent = () => {
                                 height="3"
                                 rx="1.5"
                                 stroke="#18181B"
-                                stroke-width="1.63634"
+                                strokeWidth="1.63634"
                               />
                             </svg>
 

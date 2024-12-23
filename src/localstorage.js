@@ -222,7 +222,7 @@ const carData = [
 },
 {
   id: "4",
-  img:"https://i.ibb.co/VYM6nzT/insaat-jo6f4x1t-1.png",
+  img:"https://i.ibb.co/64mq2yC/insaat-jo6f4x1t-1.png",
   heading:"Lord Trucks",
   content:"Go to your shipments to see the status of your shipment",
   url:"#0"

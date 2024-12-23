@@ -21,7 +21,7 @@ const Faq = () => {
 
         <div id="accordion-color " className="p-3">
           {faqs.map((faq, index) => (
-            <div key={index} className="py-5">
+            <div key={index} className="py-3">
               <h2 id={`accordion-color-heading-${index}`}>
                 <button
                   type="button"

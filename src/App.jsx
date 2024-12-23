@@ -9,6 +9,9 @@ import { Home } from "./Pages/Home";
 import Footer from "./Component/Footer";
 import Dummy from "./Component/Dummy";
 import Shop from "./Pages/Shop";
+import Carsgrid from "./Component/Shop/Carsgrid";
+import Singlepage from "./Component/Single-page/Singlepage";
+import Carcarousel from "./Component/Shop/Carcarousel";
 
 
 
@@ -24,7 +27,7 @@ function App() {
         <Route path="/Register" element={<Signup />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/footer" element={<Footer />} />
-        <Route path="/dummy" element={<Dummy />} />
+        <Route path="/dummy" element={<Carcarousel />} />
        
        
       </Routes>

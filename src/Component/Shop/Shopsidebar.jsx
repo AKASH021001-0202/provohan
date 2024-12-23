@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { cardsvehicle, filterConfig } from "../../localstorage";
 import Slider from "react-slick";
+import Rightsidebar from "./Rightsidebar";
+import Carsgrid from "./Carsgrid";
 
 const ShopSidebar = () => {
   const [filters, setFilters] = useState({
@@ -43,38 +45,10 @@ const ShopSidebar = () => {
   const handleSearch = (key, value) => {
     setSearchTerm((prev) => ({ ...prev, [key]: value }));
   };
-  var Shopcards = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
 
   return (
     <div className="flex">
-      <div className="max-w-[25%] p-10 max-[767px]:w-full">
+      <div className="max-w-[20%] bg-white p-5 max-[767px]:w-full">
         {filterConfig.map((filter) => (
           <div key={filter.key} className="mb-4">
             <h3
@@ -217,48 +191,10 @@ const ShopSidebar = () => {
           </div>
         ))}
       </div>
-      <div className="max-w-[75%] p-10 max-[767px]:w-full">
-        <div>
-          <div className="flex gap-5 items-center">
-            <h5 className="text-xl font-bold ">Home</h5>
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.06464 15.7443L3.5369 15.2202C3.37208 15.0552 3.28128 14.8358 3.28128 14.6012C3.28128 14.3668 3.37208 14.1471 3.5369 13.9822L9.51574 8.00358L3.53026 2.0181C3.36545 1.85341 3.27478 1.6337 3.27478 1.3993C3.27478 1.16489 3.36545 0.945048 3.53026 0.780234L4.05475 0.256002C4.39583 -0.085334 4.95141 -0.085334 5.29249 0.256002L12.4445 7.38243C12.6092 7.54712 12.7253 7.76657 12.7253 8.00306V8.00579C12.7253 8.24033 12.6091 8.45978 12.4445 8.62446L5.31187 15.7443C5.14719 15.9092 4.9211 15.9997 4.68669 16C4.45216 16 4.22919 15.9092 4.06464 15.7443Z"
-                fill="black"
-                fill-opacity="0.5"
-              />
-            </svg>
-            <h5 className="text-xl  ">New Cars in chennai</h5>
-          </div>
-          <div>
-          <Slider {...Shopcards}>
-              {cardsvehicle.map((brand, index) => (
-                <div key={index} className="p-2">
-                  <div className="flex items-center  justify-between bg-white px-2 py-2 rounded-lg shadow-md">
-                    <div className="flex items-center space-x-2">
-                      <img
-                        src={brand.img}
-                        alt={`${brand.name} Logo`}
-                        className="client_logo"
-                      />
-                    </div>
-                  
-                    <p className="text-btn_location  w-[110px] text-sm font-semibold">
-                      {brand.content}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          </div>
-        </div>
-      </div>
+      <div className="max-w-[80%] p-5  max-[767px]:w-full">
+       <Rightsidebar />
+       <Carsgrid />
+       </div>
     </div>
   );
 };
