@@ -23,9 +23,9 @@ const Carcarousel = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
     autoplaySpeed: 2000,
-    arrows: false,
+    arrows: true,
   };
   return (
     <div id="card_carouserl">
@@ -43,14 +43,14 @@ const Carcarousel = () => {
                     <img
                       src={img}
                       alt={`Car ${index}`}
-                      className="w-full h-full object-cover"
+                      className="w-[100%] h-auto object-cover"
                     />
                   </div>
                 ))}
               </Slider>
 
               {/* Hover Icons */}
-              <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute hovericon flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-200">
                   <FaHeart className="" />
                 </button>
@@ -60,8 +60,8 @@ const Carcarousel = () => {
               </div>
 
               {/* Car Details */}
-              <div className="px-2 py-5">
-                <div className="flex items-start justify-between ">
+              <div className="px-1 py-5">
+                <div className="flex  items-start justify-around ">
                   <div className="p-1">
                     <h3 className="text-lg font-semibold text-gray-800">
                       {car.name}
@@ -72,14 +72,14 @@ const Carcarousel = () => {
                     </p>
                   </div>
                   <div className="p-1">
-                    <p className="text-btn_location  bg-backgro_status px-2.5 py-1.5 rounded-lg  text-lg mt-2">
+                    <p className="text-btn_location  bg-backgro_status px-2.5 py-1.5 rounded-lg  text-sm mt-2">
                       {car.status}
                     </p>
                   </div>
                 </div>
 
                 {/* Extra Details */}
-                <div className="flex items-center gap-1 mt-3 text-sm text-gray-500">
+                <div className="flex items-center justify-around gap-1 mt-3 text-sm text-gray-500">
                   <span className="flex items-center gap-1 bg-[#F9F9F9] rounded-full  p-2 h-fourty">
                     <svg
                       width="17"

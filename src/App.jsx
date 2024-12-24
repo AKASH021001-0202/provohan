@@ -27,7 +27,7 @@ function App() {
         <Route path="/Register" element={<Signup />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/footer" element={<Footer />} />
-        <Route path="/dummy" element={<Carcarousel />} />
+        <Route path="/dummy" element={<Singlepage />} />
        
        
       </Routes>

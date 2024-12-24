@@ -46,8 +46,9 @@ const ShopSidebar = () => {
     setSearchTerm((prev) => ({ ...prev, [key]: value }));
   };
 
-  return (
-    <div className="flex">
+  return (<>
+   
+    <div className="flex ">
       <div className="max-w-[20%] bg-white p-5 max-[767px]:w-full">
         {filterConfig.map((filter) => (
           <div key={filter.key} className="mb-4">
@@ -196,6 +197,7 @@ const ShopSidebar = () => {
        <Carsgrid />
        </div>
     </div>
+  </>
   );
 };
 
