@@ -486,6 +486,122 @@ const filterConfig = [
   },
 ];
 
+const slides = [
+  {
+    image: "src/assets/slider.png",
+    heading: "Sell your car at your doorstep across Tamil Nadu",
+    paragraph: "Yes, you read that right! It’s as simple as that.",
+    buttonText: "Sell a Used Vehicle",
+  },
+  {
+    image: "src/assets/slider.png",
+    heading: "Find the best deals on used cars",
+    paragraph: "Browse through a wide range of vehicles at great prices.",
+    buttonText: "Browse Cars",
+  },
+];
+
+const formdata = [
+  {
+    category: [
+      { "img": "https://i.ibb.co/y8Z3yMg/bus-van.png", "name": "Bus-Van" },
+      { "img": "https://i.ibb.co/9qW9zmb/truck.png", "name": "Truck" },
+      { "img": "https://i.ibb.co/RNQ9Q9P/bycycle.png", "name": "Bycycle" },
+      { "img": "https://i.ibb.co/HHRTy0b/scooty.png", "name": "Scooty" },
+      { "img": "https://i.ibb.co/wLP5Ysn/bike.png", "name": "Bike" },
+      { "img": "https://i.ibb.co/DLzF8sQ/car.png", "name": "Car" },
+      { "img": "https://i.ibb.co/HhDDc51/heavy-vehicle.png", "name": "Heavy-Vehicle" }
+    ],
+    brand: [
+      { "img": "https://i.ibb.co/4SyGLBx/Ford.png", "name": "Ford" },
+      { "img": "https://i.ibb.co/dkrdPBF/honda.png", "name": "Honda" },
+      { "img": "https://i.ibb.co/jydp7FD/toyota.png", "name": "Toyota" },
+      { "img": "https://i.ibb.co/wN3k5VC/volkswagen.png", "name": "Volkswagen" },
+      { "img": "https://i.ibb.co/NVfG4f5/hyundai.png", "name": "Hyundai" },
+      { "img": "https://i.ibb.co/YpGdcSW/Suzuki.png", "name": "Suzuki" },
+      { "img": "https://i.ibb.co/qmDnjsq/audi.png", "name": "Audi" },
+      { "img": "https://i.ibb.co/5x2PH7D/Nissan.png", "name": "Nissan" },
+      { "img": "https://i.ibb.co/9whbp1M/tata.png", "name": "Tata" },
+      { "img": "https://i.ibb.co/93MqDsr/Kia.png", "name": "Kia" },
+      { "img": "https://i.ibb.co/jMXZ4Jj/bentley.png", "name": "Bentley" }
+    ],
+    modal: [
+      { "img": "https://i.ibb.co/269nM3w/alcazar.png", "name": "Alcazar" },
+      { "img": "https://i.ibb.co/q517MbP/aura.png", "name": "Aura" },
+      { "img": "https://i.ibb.co/82Cy9nC/grand10.png", "name": "Grand10" },
+      { "img": "https://i.ibb.co/RpWyTSp/venue.png", "name": "Venue" },
+      { "img": "https://i.ibb.co/wYwC96Q/verna.png", "name": "Verna" },
+      { "img": "https://i.ibb.co/HB5tvWw/creta.png", "name": "Creta" }
+    ],
+    othermodal: ["ALCAZAR", "Grand I10 Nios", "Kona Electric"],
+    fuel: [
+      { "img": "https://i.ibb.co/Dwh64ZP/ev.png", "name": "EV" },
+      { "img": "https://i.ibb.co/ZTMbyTP/cng.png", "name": "CNG" },
+      { "img": "https://i.ibb.co/g4gxtHF/disel.png", "name": "Diesel" },
+      { "img": "https://i.ibb.co/6XjLFP1/petrol.png", "name": "Petrol" }
+    ],
+    variant: [
+      { "img": "https://i.ibb.co/qmnp466/manual.png", "name": "Manual" },
+      { "img": "https://i.ibb.co/54D9LNP/automatic.png", "name": "Automatic" }
+    ],
+    state: [
+      { "state": "Tamil Nadu", "code": "TN" },
+      { "state": "Andhra Pradesh", "code": "AP" },
+      { "state": "Karnataka", "code": "KA" },
+      { "state": "Kerala", "code": "KL" },
+      { "state": "Telangana", "code": "TS" },
+      { "state": "Maharashtra", "code": "MH" },
+      { "state": "Delhi", "code": "DL" },
+      { "state": "West Bengal", "code": "WB" },
+      { "state": "Rajasthan", "code": "RJ" },
+      { "state": "Uttar Pradesh", "code": "UP" }
+    ],
+    location: [
+      { "img": "https://i.ibb.co/wrW8zWX/pune.png", "name": "Pune" },
+      { "img": "https://i.ibb.co/S06dwpW/nodia.png", "name": "Noida" },
+      { "img": "https://i.ibb.co/GpDVNRZ/mumbai.png", "name": "Mumbai" },
+      { "img": "https://i.ibb.co/yYyMdnT/chennai.png", "name": "Chennai" },
+      { "img": "https://i.ibb.co/YBL94yS/banglore.png", "name": "Bangalore" },
+      { "img": "https://i.ibb.co/hWgtDzf/Hyderabad.png", "name": "Hyderabad" }
+    ],
+    year: [
+      2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004,
+      2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995
+    ],
+    month: [
+      "January", "February", "March", "April", "May", "June", "July",
+      "August", "September", "October", "November", "December"
+    ],
+    color: [
+      { "name": "Red", "code": "#FF0000" },
+      { "name": "Blue", "code": "#0000FF" },
+      { "name": "Black", "code": "#000000" },
+      { "name": "White", "code": "#FFFFFF" },
+      { "name": "Silver", "code": "#C0C0C0" },
+      { "name": "Gray", "code": "#808080" },
+      { "name": "Green", "code": "#008000" },
+      { "name": "Yellow", "code": "#FFFF00" },
+      { "name": "Orange", "code": "#FFA500" },
+      { "name": "Brown", "code": "#A52A2A" },
+      { "name": "Purple", "code": "#800080" },
+      { "name": "Beige", "code": "#F5F5DC" },
+      { "name": "Gold", "code": "#FFD700" },
+      { "name": "Pink", "code": "#FFC0CB" }
+    ],
+    owner:["1 owner", "2 owner", "3 owner", "4 owner", "5 owner", "6 owner", "7 owner"],
+    other:[
+      "Loan",
+      "Exchange",
+      "Power steering",
+      "Power window",
+      "Alloy wheels",
+      "Flood Affect",
+      "Accidental car",
+    ]
+  },
+];
+
+
 export {
   cardsvehicle,
   touchlink,
@@ -499,5 +615,6 @@ export {
   subCategories,
   sortOptions,
   filterConfig,
-  singleproduct
+  singleproduct,
+  slides,formdata
 };

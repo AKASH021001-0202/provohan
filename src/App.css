@@ -110,7 +110,7 @@ img{
   height: 67px;
 }
 .client_carousel{
-  clip-path: polygon(100% 0, 100% 100%, 0% 100%, 0 20%);
+  clip-Path: polygon(100% 0, 100% 100%, 0% 100%, 0 20%);
 }
 .client_logo{
   width: 40px;
@@ -256,7 +256,7 @@ input[type="range"]::-moz-range-track {
 
 @media (max-width: 768px) {
   .image-gallery-slides {
-    width: 300px;
+    width: 400px;
     object-fit: cover;
     height: auto;
   } 
@@ -272,5 +272,29 @@ input[type="range"]::-moz-range-track {
     white-space: nowrap;
     display: flex;
   }
- 
+  #card_carouserl .box-shadow {
+    box-shadow: 0px 0px 5px #ddd;
+    width: 400px !important;
+  }
+}
+.scrollbar-hidden-x::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in WebKit browsers (Chrome, Safari, etc.) */
+}
+
+.scrollbar-hidden-x {
+  -ms-overflow-style: none;  /* Hides scrollbar in Internet Explorer */
+  scrollbar-width: none; /* Hides scrollbar in Firefox */
+}
+.btn_tab{
+  width: 100% !important; 
+  display: flex !important;
+padding: 10px 30px;
+margin:  10px 10px;
+}
+.stepform label{
+  font-size: 20px; 
+  padding: 10px;
+  display: flex !important;
+gap: 20px;
+font-weight: 500;
 }

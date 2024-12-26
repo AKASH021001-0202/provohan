@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { slides } from "../localstorage";
 
 const SliderComponent = () => {
   const settings = {
@@ -15,20 +16,7 @@ const SliderComponent = () => {
     arrows: true,
   };
 
-  const slides = [
-    {
-      image: "src/assets/slider.png",
-      heading: "Sell your car at your doorstep across Tamil Nadu",
-      paragraph: "Yes, you read that right! It’s as simple as that.",
-      buttonText: "Sell a Used Vehicle",
-    },
-    {
-      image: "src/assets/slider.png",
-      heading: "Find the best deals on used cars",
-      paragraph: "Browse through a wide range of vehicles at great prices.",
-      buttonText: "Browse Cars",
-    },
-  ];
+
 
   return (
     <div className="w-full mx-auto  overflow-x-hidden">

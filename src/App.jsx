@@ -12,6 +12,10 @@ import Shop from "./Pages/Shop";
 import Carsgrid from "./Component/Shop/Carsgrid";
 import Singlepage from "./Component/Single-page/Singlepage";
 import Carcarousel from "./Component/Shop/Carcarousel";
+import Sell from "./Pages/Sell";
+import Sellcards from "./Component/Sell-page/Sellcards";
+import Sellform from "./Component/Sell-page/Sellform";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 
 
@@ -27,7 +31,11 @@ function App() {
         <Route path="/Register" element={<Signup />} />
         <Route path="/otp" element={<OTPVerification />} />
         <Route path="/footer" element={<Footer />} />
-        <Route path="/dummy" element={<Singlepage />} />
+        <Route path="/singlepage" element={<Singlepage />} />
+        <Route path="/dummy" element={<Sellform />} />
+        <Route path="/sell" element={<Sell />} />
+        <Route path="/cards" element={<Sellcards />} />
+        <Route path="*" element={<NotFoundPage />} />
        
        
       </Routes>

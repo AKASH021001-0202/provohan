@@ -86,9 +86,9 @@ const Rightsidebar = () => {
           <div className="">
             <label
               for="sort-select"
-              class="block mb-2 text-sm font-medium bg-[#71717A33] border border-gray-300 text-btn_location rounded-lg w-full dark:text-white"
+              className="block mb-2 text-sm font-medium bg-[#71717A33] border border-gray-300 text-btn_location rounded-lg w-full dark:text-white"
             >
-              <div class="flex items-center gap-2 p-2">
+              <div className="flex items-center gap-2 p-2">
                 <svg
                   width="18"
                   height="18"
@@ -119,7 +119,7 @@ const Rightsidebar = () => {
                 </svg>
                 <select
                   id="sort-select"
-                  class="bg-transparent text-btn_location text-sm rounded-lg block w-full focus-visible:border-transparent focus:outline-none  focus-visible:ring-transparent focus:border-transparent focus:ring-transparent"
+                  className="bg-transparent text-btn_location text-sm rounded-lg block w-full focus-visible:border-transparent focus:outline-none  focus-visible:ring-transparent focus:border-transparent focus:ring-transparent"
                   aria-label="Sort options"
                 >
                   <option>Sort by popularity</option>

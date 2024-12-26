@@ -24,6 +24,7 @@ import {
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
+import { Link } from 'react-router-dom';
 
 const Cars = [
   {
@@ -62,14 +63,15 @@ const callsToAction = [
   { name: "Contact sales", href: "#", icon: PhoneIcon },
 ];
 const menu = [
-  "Car",
-  "Electric Vehicle",
-  "Luxury Cars",
-  "Vintage Vehicle",
-  "Bikes",
-  "Bus",
-  "Bicycle",
+  { name: "Car", url: "/shop/car" },
+  { name: "Electric Vehicle", url: "/shop/electric-vehicle" },
+  { name: "Luxury Cars", url: "/shop/luxury-cars" },
+  { name: "Vintage Vehicle", url: "/shop/vintage-vehicle" },
+  { name: "Bikes", url: "/shop/bikes" },
+  { name: "Bus", url: "/shop/bus" },
+  { name: "Bicycle", url: "/shop/bicycle" }
 ];
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -257,7 +259,7 @@ export default function Header() {
                 </clipPath>
               </defs>
             </svg>
-            Login / Register
+           <Link to="/login"> Login </Link>/ <Link to="/register"> Register </Link>
           </a>
         </div>
       </nav>
@@ -334,14 +336,14 @@ export default function Header() {
             </PopoverPanel> 
           </Popover> */}
           {menu.map((item, index) => (
-            <a
-              key={index}
-              href="#"
-              className="text-base font-semibold text-white"
-            >
-              {item}
-            </a>
-          ))}
+        <Link 
+          key={index} 
+          to={item.url} 
+          className="block  py-2  text-white  text-center"
+        >
+          {item.name} {/* Render only the 'name' of the item */}
+        </Link>
+      ))}
         </PopoverGroup>
       </div>
 
@@ -421,17 +423,17 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <div className="grid">
-            {menu.map((item, index) => (
-              <a
-                key={index}
-                href="#"
-                className="text-l py-3  font-bold text-white"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {menu.map((item, index) => (
+        <Link 
+          key={index} 
+          to={item.url} 
+          className="block  py-2  text-white  text-center"
+        >
+          {item.name} 
+        </Link>
+      ))}
+    </div>
           <div className="flex space-x-4 py-1.5 ">
             <button className="bg-yellow-400 text-purple-800 font-semibold py-1.5 px-6  transform -skew-x-12 shadow-md hover:bg-yellow-500 transition duration-300">
               Buy Vehicles
