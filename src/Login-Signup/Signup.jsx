@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios"; // Import axios for API calls
-
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/userSlice";
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,12 +16,16 @@ const Signup = () => {
     agree: false,
   });
 
-  const [otpSent, setOtpSent] = useState({ phone: false, email: false });
+  const [otpSent, setOtpSent] = useState({
+    phone: false,
+    email: false,
+  });
 
+  // Validate Form Fields
   const validateForm = () => {
     const { name, email, phone, agree } = formData;
 
-    if (!name) {
+    if (!name.trim()) {
       toast.error("Name is required!");
       return false;
     }
@@ -38,24 +45,32 @@ const Signup = () => {
     return true;
   };
 
+  // Handle Input Changes
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
+  // Send OTP for Phone or Email
   const handleSendOtp = async (type) => {
     const value = formData[type];
 
+    // Validate input before sending OTP
     if (!value || (type === "phone" && !/^\d{10}$/.test(value)) || (type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))) {
-      toast.error(`Please enter a valid ${type}`);
+      toast.error(`Please enter a valid ${type}!`);
+      return;
+    }
+
+    if (otpSent[type]) {
+      toast.info(`OTP already sent to your ${type}.`);
       return;
     }
 
     try {
-      // Simulating OTP sending via API
+      // Simulating API call for OTP
       await axios.post("https://example.com/api/send-otp", { [type]: value });
       toast.success(`OTP sent successfully to your ${type}!`);
       setOtpSent((prev) => ({ ...prev, [type]: true }));
@@ -64,17 +79,26 @@ const Signup = () => {
     }
   };
 
+  // Handle Form Submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    // if (!otpSent.phone || !otpSent.email) {
-    //   toast.error("Please verify both your email and phone number by sending OTPs!");
-    //   return;
-    // }
+    if (!otpSent.phone) {
+      toast.error("Please verify your phone number by sending OTP!");
+      return;
+    }
+    if (!otpSent.email) {
+      toast.error("Please verify your email by sending OTP!");
+      return;
+    }
 
+    // Dispatch form data to Redux store
+    dispatch(setUser(formData));
     toast.success("Account created successfully! Redirecting to login...");
+
+    // Redirect to login page
     setTimeout(() => {
       navigate("/login");
     }, 2000);
