@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios"; // Import axios for API calls
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
+
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,15 +17,19 @@ const Signup = () => {
     agree: false,
   });
 
-  const [otpSent, setOtpSent] = useState({
-    phone: false,
-    email: false,
-  });
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [phoneVerified, setPhoneVerified] = useState(false);
 
-  // Validate Form Fields
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
   const validateForm = () => {
     const { name, email, phone, agree } = formData;
-
     if (!name.trim()) {
       toast.error("Name is required!");
       return false;
@@ -41,93 +46,67 @@ const Signup = () => {
       toast.error("You must agree to the terms and conditions!");
       return false;
     }
-
     return true;
   };
 
-  // Handle Input Changes
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  // Send OTP for Phone or Email
   const handleSendOtp = async (type) => {
-    const value = formData[type];
-
-    // Validate input before sending OTP
-    if (!value || (type === "phone" && !/^\d{10}$/.test(value)) || (type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))) {
-      toast.error(`Please enter a valid ${type}!`);
-      return;
-    }
-
-    if (otpSent[type]) {
-      toast.info(`OTP already sent to your ${type}.`);
-      return;
-    }
-
     try {
-      // Simulating API call for OTP
-      await axios.post("https://example.com/api/send-otp", { [type]: value });
-      toast.success(`OTP sent successfully to your ${type}!`);
-      setOtpSent((prev) => ({ ...prev, [type]: true }));
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/otp/generate`,
+        { [type]: formData[type] }
+      );
+      toast.success(`OTP sent to your ${type}`);
+      navigate(`/otp-verification?otpType=${type}&identifier=${formData[type]}`);  // Redirect to OTP page
     } catch (error) {
-      toast.error(`Failed to send OTP to your ${type}. Please try again!`);
+      toast.error(
+        `Failed to send OTP: ${error.response?.data?.message || error.message}`
+      );
     }
   };
 
-  // Handle Form Submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
-    if (!otpSent.phone) {
-      toast.error("Please verify your phone number by sending OTP!");
+    if (!emailVerified || !phoneVerified) {
+      toast.error("Please verify both email and phone OTPs before registering.");
       return;
     }
-    if (!otpSent.email) {
-      toast.error("Please verify your email by sending OTP!");
-      return;
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/register`,
+        formData
+      );
+      toast.success("Registration successful");
+      dispatch(setUser(response.data.user)); // Update Redux store
+      navigate("/login"); // Navigate to the user dashboard
+    } catch (error) {
+      toast.error(
+        `Registration failed: ${error.response?.data?.message || error.message}`
+      );
     }
-
-    // Dispatch form data to Redux store
-    dispatch(setUser(formData));
-    toast.success("Account created successfully! Redirecting to login...");
-
-    // Redirect to login page
-    setTimeout(() => {
-      navigate("/login");
-    }, 2000);
   };
+
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto py-10 px-5 bg-neutral min-h-screen">
       <ToastContainer />
-      <div className="card flex m-4 bg-white rounded-md">
-        <div className="w-1/2">
-          <div className="bg-[url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png')] bg-repeat bg-cover">
-            <p className="h-min_600"></p>
-          </div>
-        </div>
-        <div className="w-1/2">
-          <div className="py-7 px-10 max-h-min_600 aligncenter_h w-full">
-            <div className="text-center mb-6">
-              <h2 className="text-3xl font-semibold text-gray-700">
-                Create Your Personal Account
-              </h2>
-              <p className="text-sm pt-3 text-gray-500">
-                Looks like you are new here!{" "}
-                <span className="text-firstbar">Sign up to get started</span>
-              </p>
-            </div>
+      <div className="card flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+        {/* Left Side with Image */}
+        <div className="w-1/2 bg-[url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png')] bg-cover"></div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block pb-2 text-sm font-semibold text-gray-700">
+        {/* Right Side with Form */}
+        <div className="w-full md:w-1/2 p-10">
+          <h2 className="text-3xl font-semibold text-btn_location mb-6">
+            Create Your Account
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name Input */}
+            <div>
+            <label
+                  htmlFor="name"
+                  className="block pb-2 text-sm font-semibold text-gray-700"
+                >
                   Enter Your Name
                 </label>
                 <div className="flex items-center h-form_height border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
@@ -139,103 +118,90 @@ const Signup = () => {
                     className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
                   />
                 </div>
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="email" className="block pb-2 text-sm font-semibold text-gray-700">
-                  Enter Email Address
-                </label>
-                <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleSendOtp("email")}
-                    className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
-                  >
-                    Send OTP
-                  </button>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="phone" className="block pb-2 text-sm font-semibold text-gray-700">
-                  Enter Phone Number
-                </label>
-                <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleSendOtp("phone")}
-                    className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
-                  >
-                    Send OTP
-                  </button>
-                </div>
-              </div>
-
-              <p className="text-sm text-gray-600 mb-4">
-                Please verify both your mobile number and email address through One Time Password.
-              </p>
-
-              <div className="mb-6">
-                <label className="inline-flex items-center text-sm text-gray-700">
-                  <input
-                    type="checkbox"
-                    name="agree"
-                    checked={formData.agree}
-                    onChange={handleInputChange}
-                    className="form-checkbox text-blue-600"
-                  />
-                  <span className="ml-2">
-                    By creating an account you agree to our{" "}
-                    <a href="#" className="text-blue-600 hover:underline">
-                      Terms of Service
-                    </a>
-                    ,{" "}
-                    <a href="#" className="text-blue-600 hover:underline">
-                      Privacy Policy
-                    </a>
-                    , and{" "}
-                    <a href="#" className="text-blue-600 hover:underline">
-                      Seller Policy
-                    </a>
-                    .
-                  </span>
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full p-3 mt-4 bg-btn_location text-white rounded-md font-semibold hover:bg-blue-700 focus:outline-none"
-              >
-                Create Account
-              </button>
-            </form>
-
-            <div className="mt-4 text-center text-sm text-gray-600">
-              <p>
-                Have an account?{" "}
-                <a href="/login" className="text-btn_location 
- hover:underline">
-                  Log in
-                </a>
-              </p>
             </div>
-          </div>
+
+            {/* Email Input */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block pb-2 text-sm font-semibold text-gray-700"
+              >
+                Enter Email Address
+              </label>
+              <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleSendOtp("email")}
+                  className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
+                >
+                  Send OTP
+                </button>
+              </div>
+            </div>
+
+            {/* Phone Input */}
+            <div>
+              <label
+                htmlFor="phone"
+                className="block pb-2 text-sm font-semibold text-gray-700"
+              >
+                Enter Phone Number
+              </label>
+              <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleSendOtp("phone")}
+                  className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
+                >
+                  Send OTP
+                </button>
+              </div>
+            </div>
+
+       {/* Terms and Conditions */}
+<div className="flex items-start space-x-3 outline-none">
+  <input
+    type="checkbox"
+    name="agree"
+    checked={formData.agree}
+    onChange={handleInputChange}
+    className="w-5 h-5 border border-gray-300 rounded text-btn_location outline-none "
+  />
+  <label className="text-sm text-gray-600">
+    I agree to the{" "}
+    <a href="/terms" className="text-btn_location underline">
+      Terms of Service
+    </a>{" "}
+    and{" "}
+    <a href="/privacy" className="text-btn_location underline">
+      Privacy Policy
+    </a>.
+  </label>
+</div>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-white bg-btn_location rounded-lg hover:bg-opacity-90"
+            >
+              Create Account
+            </button>
+          </form>
         </div>
       </div>
     </div>
