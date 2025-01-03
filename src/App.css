@@ -298,3 +298,14 @@ margin:  10px 10px;
 gap: 20px;
 font-weight: 500;
 }
+
+.react-tel-input .form-control,.react-tel-input .flag-dropdown ,.react-tel-input .form-control:focus-visible,input:-internal-autofill-selected
+  {
+
+  outline: none;
+
+ 
+  background:none !important; 
+ border: none;
+ 
+}
