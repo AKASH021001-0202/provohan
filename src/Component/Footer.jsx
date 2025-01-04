@@ -135,7 +135,7 @@ const Footer = () => {
                   key={key}
                   className="text-white text-lg py-1 font-semibold "
                 >
-                  <a href={servicesList[key].link}>{servicesList[key].name}</a>
+                  <a href={servicesList[key].link}>{servicesList[key].name}</a >
                 </li>
               ))}
             </ul>

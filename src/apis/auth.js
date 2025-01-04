@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const userRegisterdata = async (formData) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/registers`, formData);
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/register`, formData);
     return response.data;
   } catch (error) {
     console.error('Error registering user:', error.response?.data || error.message);

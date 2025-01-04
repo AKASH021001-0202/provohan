@@ -71,7 +71,12 @@ const menu = [
   { name: "Bus", url: "/shop/bus" },
   { name: "Bicycle", url: "/shop/bicycle" }
 ];
-
+const handleLogout = () => {
+  localStorage.removeItem("isAuthenticated");
+  localStorage.removeItem("token");
+  localStorage.removeItem("id");
+  navigate("/login");
+};
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -87,13 +92,13 @@ export default function Header() {
         className="mx-auto flex  items-center  p-0  bg-firstbar"
       >
         <div className="flex bg-navlogo w-36 justify-center">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link to="/home" className="-m-1.5 p-1.5">
             <img
               alt="Company Logo"
               src="https://i.ibb.co/Jqnhzg5/Provahan-logo-final-1-2.png"
               className="h-16 w-auto"
             />
-          </a>
+          </Link >
         </div>
         <div className="relative px-2 my-auto max-[600px]:hidden lg:block">
           <button
@@ -131,21 +136,21 @@ export default function Header() {
 
           {dropdownOpen && (
             <div className="absolute bg-white text-purple-800 rounded shadow mt-2 w-48 z-10">
-              <a href="#" className="block px-4 py-2 hover:bg-purple-100">
+              <Link to="/home" className="block px-4 py-2 hover:bg-purple-100">
                 New York
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-purple-100">
+              </Link >
+              <Link to="/home" className="block px-4 py-2 hover:bg-purple-100">
                 Los Angeles
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-purple-100">
+              </Link >
+              <Link to="/home" className="block px-4 py-2 hover:bg-purple-100">
                 Chicago
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-purple-100">
+              </Link >
+              <Link to="/home" className="block px-4 py-2 hover:bg-purple-100">
                 Houston
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-purple-100">
+              </Link >
+              <Link to="/home" className="block px-4 py-2 hover:bg-purple-100">
                 San Francisco
-              </a>
+              </Link >
             </div>
           )}
         </div>
@@ -203,12 +208,12 @@ export default function Header() {
             </button>
 
             <div className="absolute left-0 hidden w-32 mt-2 bg-white text-purple-800 rounded-md shadow-lg">
-              <a href="#" className="block px-4 py-2 text-sm hover:bg-purple-200">
+              <Link to="/home" className="block px-4 py-2 text-sm hover:bg-purple-200">
                 Option 1
-              </a>
-              <a href="#" className="block px-4 py-2 text-sm hover:bg-purple-200">
+              </Link>
+              <Link to="/home" className="block px-4 py-2 text-sm hover:bg-purple-200">
                 Option 2
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -235,8 +240,7 @@ export default function Header() {
             </svg>
           </button>
 
-          <a
-            href="#"
+          <Link to="#0"
             className="flex items-center text-sm font-medium hover:text-gray-300"
           >
             <svg
@@ -259,8 +263,8 @@ export default function Header() {
                 </clipPath>
               </defs>
             </svg>
-           <Link to="/login"> Login </Link>/ <Link to="/register"> Register </Link>
-          </a>
+           <Link onClick={handleLogout}> Logout </Link>
+          </Link>
         </div>
       </nav>
 
@@ -355,14 +359,14 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-firstbar px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <Link to="/home" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
                 alt="Company Logo"
                 src="https://i.ibb.co/Jqnhzg5/Provahan-logo-final-1-2.png"
                 className="h-8 w-auto"
               />
-            </a>
+            </Link >
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}

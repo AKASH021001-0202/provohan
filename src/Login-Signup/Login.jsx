@@ -1,37 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/userSlice";
 import "react-toastify/dist/ReactToastify.css";
-import { auth } from "./Firebase/firebase";
+import { userLogindata } from "../apis/auth";
 
 const Login = () => {
   const [mynumber, setNumber] = useState("");
-  const [otp, setOtp] = useState("");
-  const [showOtpInput, setShowOtpInput] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    try {
-      if (!window.recaptchaVerifier) {
-        const auth = getAuth();
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          'size': 'invisible',
-          'callback': (response) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber.
-            // onSignInSubmit();
-          }
-        });
- 
-      }
-    } catch (error) {
-      console.error("Error initializing RecaptchaVerifier:", error);
-      toast.error("Failed to initialize reCAPTCHA. Please try again later.");
-    }
-  }, []);
-
-  const formatPhoneNumber = (number) => "+91" + number.replace(/\D/g, "").slice(-10);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -39,123 +19,82 @@ const Login = () => {
       toast.error("Please enter a valid 10-digit phone number.");
       return;
     }
-
+  
     setLoading(true);
-
-    const formattedNumber = formatPhoneNumber(mynumber);
-
+  
     try {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          "recaptcha-container",
-          { size: "invisible", callback: () => console.log("reCAPTCHA verified!") },
-          auth
-        );
+      // Assuming userLogindata is correctly set up to receive phone number
+      const loginResponse = await userLogindata({ phone: mynumber }); // Pass phone number correctly in the payload
+  
+      if (loginResponse.code === 0) {
+        dispatch(setUser(loginResponse)); // Assuming response contains user data
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("token", loginResponse.token);
+        localStorage.setItem("id", loginResponse.userId);  // Use userId instead of id
+        toast.success(`Logged in with phone number: ${mynumber}`);
+        
+        navigate("/"); // Redirect to home
+      } else {
+        toast.error("User not found");
       }
-
-      const result = await signInWithPhoneNumber(auth, formattedNumber, window.recaptchaVerifier);
-      setConfirmationResult(result);
-      setShowOtpInput(true);
-      toast.success("OTP sent successfully!");
     } catch (err) {
-      toast.error("Failed to send OTP. Please try again.");
+      toast.error("Failed to log in. Please try again.");
       console.error("Error during sign-in:", err);
     } finally {
       setLoading(false);
     }
   };
-
-  const handleValidateOtp = async (e) => {
-    e.preventDefault();
-    if (!otp || !confirmationResult) {
-      toast.error("Please enter the OTP.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await confirmationResult.confirm(otp);
-      toast.success("Login successful!");
-      // Redirect or additional logic
-    } catch (err) {
-      if (err.code === "auth/invalid-verification-code") {
-        toast.error("Invalid OTP. Please try again.");
-      } else if (err.code === "auth/code-expired") {
-        toast.error("OTP has expired. Please request a new one.");
-      } else {
-        toast.error("Failed to validate OTP. Please try again.");
-      }
-      console.error("OTP Validation Error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   return (
     <div className="container mx-auto">
       <ToastContainer />
-      <div className="card flex m-4 bg-white rounded-md">
-        <div className="w-1/2">
+      <div className="card flex m-4 flex-wrap bg-white rounded-[50px]">
+        <div className="w-full md:w-1/2 rounded-md">
           <div className="bg-[url('https://i.ibb.co/vDRhZP0/df90638e259a358bb56c293fc9f072d9.png')] bg-repeat bg-cover">
-            <p className="h-min_600"></p>
+            <p className="min-h-[550px]"></p>
           </div>
         </div>
-        <div className="w-1/2 py-7">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl font-semibold text-gray-700">Log in to continue</h2>
-            <p className="text-sm pt-3 text-gray-500">Please enter the form to login into this app</p>
-          </div>
-          <form className="w-full p-12" onSubmit={showOtpInput ? handleValidateOtp : handleSignIn}>
-            {!showOtpInput && (
+        <div className="w-full md:w-1/2 py-7">
+          <div className="flex flex-col items-center justify-center my-auto h-[100%]">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-semibold text-gray-700">Log in to continue</h2>
+              <p className="text-sm pt-3 text-gray-500">Please enter the form to login into this app</p>
+            </div>
+            <form className="w-full p-12" onSubmit={handleSignIn}>
               <div className="mb-4">
                 <label htmlFor="Telphone" className="block pb-2 text-sm font-semibold text-gray-700">
                   Enter Phone Number
                 </label>
-                <input
-                  id="Telphone"
-                  type="tel"
-                  value={mynumber}
-                  onChange={(e) => setNumber(e.target.value)}
-                  placeholder="Phone number"
-                  className="w-full border px-3 py-2 rounded-md"
-                  disabled={loading}
-                />
-                <div id="recaptcha-container"></div>
+                <div className="flex items-center h-form_height border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+                  <input
+                    id="Telphone"
+                    type="tel"
+                    value={mynumber}
+                    onChange={(e) => setNumber(e.target.value)}
+                    placeholder="Phone number"
+                    className="w-full border px-3 py-2 rounded-md outline-none"
+                    disabled={loading}
+                  />
+                </div>
               </div>
-            )}
-            {showOtpInput && (
-              <div className="mb-4">
-                <label htmlFor="otp" className="block pb-2 text-sm font-semibold text-gray-700">
-                  Enter OTP
-                </label>
-                <input
-                  id="otp"
-                  type="text"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  placeholder="Enter OTP"
-                  className="w-full border px-3 py-2 rounded-md"
-                  disabled={loading}
-                />
-              </div>
-            )}
-            <button
-              type="submit"
-              className={`w-full p-3 mt-4 bg-btn_location text-white rounded-md font-semibold hover:bg-blue-700 ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? "Processing..." : showOtpInput ? "Validate OTP" : "Log In"}
-            </button>
-          </form>
-          <div className="mt-4 text-center text-sm text-gray-600">
-            <p>
-              Don't have an account?{" "}
-              <Link to={"/Register"} className="text-blue-500 hover:underline">
-                Sign up
-              </Link>
-            </p>
+              <button
+                type="submit"
+                className={`w-full p-3 mt-4 bg-btn_location text-white rounded-md font-semibold hover:bg-blue-700 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Log In"}
+              </button>
+            </form>
+            <div className="mt-4 text-center text-sm text-gray-600">
+              <p>
+                Don't have an account?{" "}
+                <Link to={"/Register"} className="text-blue-500 hover:underline">
+                  Sign up
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

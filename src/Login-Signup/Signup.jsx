@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
+import { userRegisterdata } from "../apis/auth";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -16,9 +17,6 @@ const Signup = () => {
     phone: "",
     agree: false,
   });
-
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,43 +47,22 @@ const Signup = () => {
     return true;
   };
 
-  const handleSendOtp = async (type) => {
-    try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/otp/generate`,
-        { [type]: formData[type] }
-      );
-      toast.success(`OTP sent to your ${type}`);
-      navigate(`/otp-verification?otpType=${type}&identifier=${formData[type]}`);  // Redirect to OTP page
-    } catch (error) {
-      toast.error(
-        `Failed to send OTP: ${error.response?.data?.message || error.message}`
-      );
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    if (!emailVerified || !phoneVerified) {
-      toast.error("Please verify both email and phone OTPs before registering.");
-      return;
-    }
+
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/register`,
-        formData
-      );
+      const response = await userRegisterdata(formData);
+
+      dispatch(setUser(response.data));
       toast.success("Registration successful");
-      dispatch(setUser(response.data.user)); // Update Redux store
-      navigate("/login"); // Navigate to the user dashboard
+      navigate("/login");
     } catch (error) {
       toast.error(
         `Registration failed: ${error.response?.data?.message || error.message}`
       );
     }
   };
-
 
   return (
     <div className="container mx-auto py-10 px-5 bg-neutral min-h-screen">
@@ -103,21 +80,21 @@ const Signup = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name Input */}
             <div>
-            <label
-                  htmlFor="name"
-                  className="block pb-2 text-sm font-semibold text-gray-700"
-                >
-                  Enter Your Name
-                </label>
-                <div className="flex items-center h-form_height border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
-                  <input
-                    name="name"
-                    placeholder="Enter Your Name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
-                  />
-                </div>
+              <label
+                htmlFor="name"
+                className="block pb-2 text-sm font-semibold text-gray-700"
+              >
+                Enter Your Name
+              </label>
+              <div className="flex items-center h-form_height border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+                <input
+                  name="name"
+                  placeholder="Enter Your Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
+                />
+              </div>
             </div>
 
             {/* Email Input */}
@@ -128,7 +105,7 @@ const Signup = () => {
               >
                 Enter Email Address
               </label>
-              <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+              <div className="flex items-center border h-form_height border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
                 <input
                   type="email"
                   name="email"
@@ -137,13 +114,6 @@ const Signup = () => {
                   onChange={handleInputChange}
                   className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => handleSendOtp("email")}
-                  className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
-                >
-                  Send OTP
-                </button>
               </div>
             </div>
 
@@ -155,7 +125,7 @@ const Signup = () => {
               >
                 Enter Phone Number
               </label>
-              <div className="flex items-center border border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
+              <div className="flex items-center border h-form_height border-form_border bg-white px-3 py-1.5 shadow-sm focus-within:ring-1 focus-within:ring-btn_location">
                 <input
                   type="tel"
                   name="phone"
@@ -164,36 +134,29 @@ const Signup = () => {
                   onChange={handleInputChange}
                   className="ml-3 w-full bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => handleSendOtp("phone")}
-                  className="text-sm font-semibold text-white bg-btn_location border rounded-full w-36 p-2"
-                >
-                  Send OTP
-                </button>
               </div>
             </div>
 
-       {/* Terms and Conditions */}
-<div className="flex items-start space-x-3 outline-none">
-  <input
-    type="checkbox"
-    name="agree"
-    checked={formData.agree}
-    onChange={handleInputChange}
-    className="w-5 h-5 border border-gray-300 rounded text-btn_location outline-none "
-  />
-  <label className="text-sm text-gray-600">
-    I agree to the{" "}
-    <a href="/terms" className="text-btn_location underline">
-      Terms of Service
-    </a>{" "}
-    and{" "}
-    <a href="/privacy" className="text-btn_location underline">
-      Privacy Policy
-    </a>.
-  </label>
-</div>
+            {/* Terms and Conditions */}
+            <div className="flex items-start space-x-3 outline-none">
+              <input
+                type="checkbox"
+                name="agree"
+                checked={formData.agree}
+                onChange={handleInputChange}
+                className="w-5 h-5 border border-gray-300 rounded text-btn_location outline-none"
+              />
+              <label className="text-sm text-gray-600">
+                I agree to the{" "}
+                <Link to="/terms" className="text-btn_location underline">
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link to="/terms" className="text-btn_location underline">
+                  Privacy Policy
+                </Link>.
+              </label>
+            </div>
 
             <button
               type="submit"
