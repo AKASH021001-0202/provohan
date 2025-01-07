@@ -240,7 +240,7 @@ export default function Header() {
             </svg>
           </button>
 
-          <Link to="#0"
+          <Link onClick={handleLogout}
             className="flex items-center text-sm font-medium hover:text-gray-300"
           >
             <svg
@@ -263,7 +263,7 @@ export default function Header() {
                 </clipPath>
               </defs>
             </svg>
-           <Link onClick={handleLogout}> Logout </Link>
+            Logout 
           </Link>
         </div>
       </nav>

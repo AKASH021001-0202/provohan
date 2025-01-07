@@ -120,7 +120,8 @@ const Footer = () => {
                   key={key}
                   className="text-white py-1 text-lg font-semibold "
                 >
-                  <a href={touchlink[key].link}>{touchlink[key].name}</a>
+                  <a href
+                  ={touchlink[key].link}>{touchlink[key].name}</a>
                 </li>
               ))}
             </ul>

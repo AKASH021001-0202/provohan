@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
-// Import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 import Header from "../Header";
 import Footer from "../Footer";
 import Faq from "../Faq";
 import Carcarousel from "../Shop/Carcarousel";
 import { Link } from "react-router-dom";
-import { singleproduct } from "../../localstorage";
+import axios from "axios";
+
 
 const Singlepage = () => {
-  
+  const [singleproduct, setSingleProduct] = useState([]);
+
+  useEffect(() => {
+    // Fetch products from the API using axios
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/product`);
+        setSingleProduct(response.data)
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <Header />
@@ -26,7 +41,7 @@ const Singlepage = () => {
           <path
             d="M4.06464 15.7443L3.5369 15.2202C3.37208 15.0552 3.28128 14.8358 3.28128 14.6012C3.28128 14.3668 3.37208 14.1471 3.5369 13.9822L9.51574 8.00358L3.53026 2.0181C3.36545 1.85341 3.27478 1.6337 3.27478 1.3993C3.27478 1.16489 3.36545 0.945048 3.53026 0.780234L4.05475 0.256002C4.39583 -0.085334 4.95141 -0.085334 5.29249 0.256002L12.4445 7.38243C12.6092 7.54712 12.7253 7.76657 12.7253 8.00306V8.00579C12.7253 8.24033 12.6091 8.45978 12.4445 8.62446L5.31187 15.7443C5.14719 15.9092 4.9211 15.9997 4.68669 16C4.45216 16 4.22919 15.9092 4.06464 15.7443Z"
             fill="black"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
           />
         </svg>
         <h5 className="text-xl  font-semibold">New Cars in chennai</h5>
@@ -41,7 +56,7 @@ const Singlepage = () => {
           <path
             d="M4.06464 15.7443L3.5369 15.2202C3.37208 15.0552 3.28128 14.8358 3.28128 14.6012C3.28128 14.3668 3.37208 14.1471 3.5369 13.9822L9.51574 8.00358L3.53026 2.0181C3.36545 1.85341 3.27478 1.6337 3.27478 1.3993C3.27478 1.16489 3.36545 0.945048 3.53026 0.780234L4.05475 0.256002C4.39583 -0.085334 4.95141 -0.085334 5.29249 0.256002L12.4445 7.38243C12.6092 7.54712 12.7253 7.76657 12.7253 8.00306V8.00579C12.7253 8.24033 12.6091 8.45978 12.4445 8.62446L5.31187 15.7443C5.14719 15.9092 4.9211 15.9997 4.68669 16C4.45216 16 4.22919 15.9092 4.06464 15.7443Z"
             fill="black"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
           />
         </svg>
         <h5 className="text-xl font-semibold ">Hyundai i20 car</h5>
@@ -55,14 +70,16 @@ const Singlepage = () => {
           <path
             d="M4.06464 15.7443L3.5369 15.2202C3.37208 15.0552 3.28128 14.8358 3.28128 14.6012C3.28128 14.3668 3.37208 14.1471 3.5369 13.9822L9.51574 8.00358L3.53026 2.0181C3.36545 1.85341 3.27478 1.6337 3.27478 1.3993C3.27478 1.16489 3.36545 0.945048 3.53026 0.780234L4.05475 0.256002C4.39583 -0.085334 4.95141 -0.085334 5.29249 0.256002L12.4445 7.38243C12.6092 7.54712 12.7253 7.76657 12.7253 8.00306V8.00579C12.7253 8.24033 12.6091 8.45978 12.4445 8.62446L5.31187 15.7443C5.14719 15.9092 4.9211 15.9997 4.68669 16C4.45216 16 4.22919 15.9092 4.06464 15.7443Z"
             fill="black"
-            fill-opacity="0.5"
+            fillOpacity="0.5"
           />
         </svg>
         <h5 className="text-xl ">Hyundai i20 Used Car details</h5>
       </div>
       {singleproduct.map((product) => (
-        <>
-          <div className="flex  p-5 flex-wrap " key={product.id}>
+         product._id ? (
+        <div key={product._id}>
+         
+          <div className="flex  p-5 flex-wrap " >
             <div className="w-[60%] max-[767px]:w-[100%]">
               <ImageGallery
                 items={product.img}
@@ -139,7 +156,7 @@ const Singlepage = () => {
                 </div>
                 <div className="w-[25%] flex  items-center justify-center">
                   <h5 className="text-lg text-[#4CAF50] font-semibold">
-                    {product.price}
+                  ₹ {product.price}
                   </h5>
                 </div>
               </div>
@@ -181,8 +198,8 @@ const Singlepage = () => {
                 </p>
 
                 <ul className="single_specefic">
-                  {product.specs.map((spec) => (
-                    <li> {spec}</li>
+                  {product.specs.map((spec,i) => (
+                    <li key={i}> {spec}</li>
                   ))}
                 </ul>
               </div>
@@ -723,7 +740,8 @@ const Singlepage = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
+         ) : null 
       ))}
       <div className=" p-5">
         <h1 className="text-2xl font-semibold mb-3 px-5">
