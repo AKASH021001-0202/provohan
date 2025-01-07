@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { FaHeart, FaShare } from "react-icons/fa";
-import { carData } from "../../localstorage";
+// import { carData } from "../../localstorage";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { selectProducts, setProducts } from "../../redux/slices/productslice";
+import { useNavigate } from "react-router-dom";
 
 const Carsgrid = () => {
   // Slick settings for internal image carousel
@@ -16,6 +20,28 @@ const Carsgrid = () => {
     arrows: false,
   };
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const products = useSelector(selectProducts) || []; // Default to an empty array
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/product`
+        );
+        dispatch(setProducts(response.data));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [dispatch]);
+
+  const handleNavigate = (id) => {
+    navigate(`/product/${id}`);
+  };
   return (
     <div className="w-full   ">
       <section className=" ">
@@ -24,18 +50,21 @@ const Carsgrid = () => {
           <div className="  ">
             <div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {carData.map((car) => (
+                {products.map((car, i) => (
                   <div
-                    key={car.id}
-                    className="relative bg-white rounded-lg box-shadow group overflow-hidden"
+                    key={i}
+                    className="relative bg-white rounded-lg box-shadow group overflow-hidden"   onClick={() => handleNavigate(car._id)}
                   >
                     {/* Internal Image Carousel */}
                     <Slider {...imageSliderSettings}>
-                      {car.images.map((img, index) => (
-                        <div key={index} className="w-full h-52 focus:outline-none">
+                      {car.img.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="w-full h-52 focus:outline-none"
+                        >
                           <img
-                            src={img}
-                            alt={`Car ${index}`}
+                            src={img.original}
+                            alt={`Car ${idx}`}
                             className="w-full h-full object-cover"
                           />
                         </div>

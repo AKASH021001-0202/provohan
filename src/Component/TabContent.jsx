@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { FaHeart, FaShare, FaMapMarkerAlt, FaCarSide } from "react-icons/fa";
-import { carData } from "../localstorage";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectProducts, setProducts } from "../redux/slices/productslice";
+import axios from "axios";
 
 const TabContent = () => {
   const [activeTab, setActiveTab] = useState("tab1"); // Manage active tab state
-  const [cars, setCars] = useState([]); // State to hold car data
-
+ 
   const handleTabClick = (tab) => {
     setActiveTab(tab); // Set the active tab
   };
 
-  // Simulated car data with multiple images
-  useEffect(() => {
-    setCars(carData);
-  }, []);
+
 
   // Slick settings for internal image carousel
   const imageSliderSettings = {
@@ -26,6 +25,28 @@ const TabContent = () => {
     autoplay: false,
     autoplaySpeed: 2000,
     arrows: false,
+  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const products = useSelector(selectProducts) || []; // Default to an empty array
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/product`
+        );
+        dispatch(setProducts(response.data));
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [dispatch]);
+
+  const handleNavigate = (id) => {
+    navigate(`/product/${id}`);
   };
 
   return (
@@ -67,23 +88,26 @@ const TabContent = () => {
             {activeTab === "tab1" && (
               <div>
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cars.map((car) => (
+                  {products.map((car ,i ) => (
                     <div
-                      key={car.id}
-                      className="relative bg-white rounded-lg shadow-lg group overflow-hidden"
+                      key={i}
+                      className="relative bg-white rounded-lg shadow-lg group overflow-hidden" onClick={() => handleNavigate(car._id)}
                     >
                       {/* Internal Image Carousel */}
                       <Slider {...imageSliderSettings}>
-                        {car.images.map((img, index) => (
-                          <div key={index} className="w-full h-52 focus:outline-none">
-                            <img
-                              src={img}
-                              alt={`Car ${index}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ))}
-                      </Slider>
+                      {car.img.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="w-full h-52 focus:outline-none"
+                        >
+                          <img
+                            src={img.original}
+                            alt={`Car ${idx}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </Slider>
                     
 
                       {/* Hover Icons */}
@@ -198,23 +222,26 @@ const TabContent = () => {
               <div className="h-auto">
             
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cars.map((car) => (
+                  {products.map((car,i) => (
                     <div
-                      key={car.id}
-                      className="relative bg-white rounded-lg shadow-lg group overflow-hidden"
+                      key={i}
+                      className="relative bg-white rounded-lg shadow-lg group overflow-hidden" onClick={() => handleNavigate(car._id)}
                     >
                       {/* Internal Image Carousel */}
                       <Slider {...imageSliderSettings}>
-                        {car.images.map((img, index) => (
-                          <div key={index} className="w-full h-52 focus:outline-none">
-                            <img
-                              src={img}
-                              alt={`Car ${index}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ))}
-                      </Slider>
+                      {car.img.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="w-full h-52 focus:outline-none"
+                        >
+                          <img
+                            src={img.original}
+                            alt={`Car ${idx}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </Slider>
 
                       {/* Hover Icons */}
                       <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -5,31 +5,56 @@ import Header from "../Header";
 import Footer from "../Footer";
 import Faq from "../Faq";
 import Carcarousel from "../Shop/Carcarousel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import axios from "axios";
-
-
 const Singlepage = () => {
-  const [singleproduct, setSingleProduct] = useState([]);
+  const { id } = useParams();
+ 
+  const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
 
+  // Fetch product details
   useEffect(() => {
-    // Fetch products from the API using axios
-    const fetchProducts = async () => {
+    const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/product`);
-        setSingleProduct(response.data)
-      } catch (error) {
-        console.error('Error fetching products:', error);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/product/${id}`);
+        if (response.data) {
+          setProduct(response.data);
+        
+        } else {
+          setError("Product not found");
+        }
+      } catch (err) {
+        console.error("Error details:", err);
+        if (err.response) {
+          // Backend responded with an error
+          setError(err.response?.data?.message || "Failed to fetch product");
+        } else {
+          // Network or other error
+          setError("Failed to connect to the server");
+        }
       }
     };
+  
+    fetchProduct();
+  }, [id]);
+  
+  if (error) {
+    return <p>Error: {error}</p>;
+}
 
-    fetchProducts();
-  }, []);
-
+if (!product) {
+    return <p>Loading...</p>;
+}
   return (
     <>
       <Header />
-      <div className="flex gap-5 max-[767px]:flex-wrap items-center p-5">
+     
+     
+        <div key={product._id}>
+          <div className="flex gap-5 max-[767px]:flex-wrap items-center p-5">
         <h5 className="text-xl font-semibold ">Home</h5>
         <svg
           width="12"
@@ -44,7 +69,7 @@ const Singlepage = () => {
             fillOpacity="0.5"
           />
         </svg>
-        <h5 className="text-xl  font-semibold">New Cars in chennai</h5>
+        <h5 className="text-xl  font-semibold">New Cars in {product.location}</h5>
 
         <svg
           width="12"
@@ -59,7 +84,7 @@ const Singlepage = () => {
             fillOpacity="0.5"
           />
         </svg>
-        <h5 className="text-xl font-semibold ">Hyundai i20 car</h5>
+        <h5 className="text-xl font-semibold "> {product.type}</h5>
         <svg
           width="12"
           height="12"
@@ -73,12 +98,8 @@ const Singlepage = () => {
             fillOpacity="0.5"
           />
         </svg>
-        <h5 className="text-xl ">Hyundai i20 Used Car details</h5>
+        <h5 className="text-xl ">{product.name} Used Car details</h5>
       </div>
-      {singleproduct.map((product) => (
-         product._id ? (
-        <div key={product._id}>
-         
           <div className="flex  p-5 flex-wrap " >
             <div className="w-[60%] max-[767px]:w-[100%]">
               <ImageGallery
@@ -107,7 +128,7 @@ const Singlepage = () => {
                   />
                 </svg>
 
-                <p className="py-2">{product.type}</p>
+                <p className="py-2">{product.location}</p>
               </div>
               <Link
                 to=""
@@ -741,8 +762,7 @@ const Singlepage = () => {
             </div>
           </div>
         </div>
-         ) : null 
-      ))}
+     
       <div className=" p-5">
         <h1 className="text-2xl font-semibold mb-3 px-5">
           Still can’t decide?

@@ -85,7 +85,7 @@ const Rightsidebar = () => {
           <h5 className="text-xl font-bold ">557 Used cars in Chennai</h5>
           <div className="">
             <label
-              for="sort-select"
+              htmlFor="sort-select"
               className="block mb-2 text-sm font-medium bg-[#71717A33] border border-gray-300 text-btn_location rounded-lg w-full dark:text-white"
             >
               <div className="flex items-center gap-2 p-2">

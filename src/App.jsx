@@ -32,7 +32,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/singlepage" element={<Singlepage />} />
+            <Route path="/product/:id" element={<Singlepage />} />
             <Route path="/dummy" element={<Sellform />} />
             <Route path="/sell" element={<Sell />} />
             <Route path="/cards" element={<Sellcards />} />
