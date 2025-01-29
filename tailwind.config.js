@@ -4,15 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        navlogo: "#7e3391",
-        firstbar: "#5E0075",
-        btn_location: "#7E3391",
-        topbar: "#5E0075",
+        navlogo: "#3B3391",
+        firstbar: "#0A0075",
+        btn_location: "#3B3391",
+        topbar: "#0A0075",
         form_border: "#71717A",
         tab_section:'#272727 ',
         backgro_status: "#4933911A",
 
       },
+     
+        scrollbar: ['hidden'], // Enables `scrollbar-hidden`
+     
       width: {
         search: "480px",
         otp: "850px",

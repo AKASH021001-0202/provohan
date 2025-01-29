@@ -9,14 +9,14 @@ const Footer = () => {
       <div className="container mx-auto ">
         <div className="flex gap-5 max-md:flex-wrap max-md: p-5 max-tablet:flex-wrap md:p-7 tablet:p-4" >
           <div className="w-2/5 max-md:w-full max-tablet:w-full ">
-            <h3 className="text-4xl pb-4 text-white">Provahan</h3>
+            <h3 className="text-4xl pb-4 text-white">OxVahan</h3>
             <p className="text-lg text-white">
-              Provahan is the most trusted way of buying and selling used cars.
+              OxVahan is the most trusted way of buying and selling used cars.
               Choose from over 5000 fully inspected second-hand car models.
-              Select online and book a test drive at your home or at a Provahan
+              Select online and book a test drive at your home or at a OxVahan
               Car Hub near you. Get a no-questions-asked 5-day money back
               guarantee and a free one-year comprehensive service warranty with
-              Assured Resale Value on every Provahan car.
+              Assured Resale Value on every OxVahan car.
             </p>
 
             <h4 className="text-xl font-semibold  pt-5 text-white">Follow us</h4>

@@ -18,6 +18,7 @@ import Sellform from "./Component/Sell-page/Sellform";
 import NotFoundPage from "./Pages/NotFoundPage";
 import Login from "./Login-Signup/Login";
 import PrivateRoute from "./Pages/PrivateRoute";
+import Layout from "./Dashboard/Layout";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
           <Route path="/footer" element={<Footer />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+          <Route path="/*" element={<Layout />} />
+            
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<Singlepage />} />
             <Route path="/dummy" element={<Sellform />} />

@@ -48,10 +48,10 @@ const Buysell = () => {
           <div className="flex align-center gap-6  max-[600px]:flex-col text-white">
             <div className="w-1/2  max-[600px]:w-full ">
               <h2 className="text-3xl font-bold text-black mb-5 ">
-                Car Dealership With Provahan
+                Car Dealership With OxVahan
               </h2>
               <p className="text-xl text-black mb-5 font-medium">
-                Provahan is your trusted destination for buying and selling
+                OxVahan is your trusted destination for buying and selling
                 quality pre-owned vehicles. With a commitment to transparency,
                 reliability, and customer service, we connect you with a wide
                 selection of used cars, bikes, scooters, bicycles, trucks,

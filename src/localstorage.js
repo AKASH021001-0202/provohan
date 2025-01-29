@@ -16,7 +16,7 @@ const servicesList = {
 
 const copyrights = {
   copyrights: {
-    name: "© 2024 Provahan Technologies Private Limited. All rights reserved.",
+    name: "© 2024 OxVahan Technologies Private Limited. All rights reserved.",
     link: "#",
   },
 };
@@ -329,7 +329,7 @@ const client2 = [
 ];
 const faqs = [
   {
-    question: "1. Is Provahan website safe for transactions?",
+    question: "1. Is OxVahan website safe for transactions?",
     answer:
       "We prioritize user safety by verifying listings, providing secure messaging, and offering guidance for safe transactions. ",
   },
@@ -351,7 +351,7 @@ const faqs = [
   {
     question: "5. How can I contact customer support?",
     answer:
-      "You can reach us via email at provahanindia@gmail.com or use the Contact Us form on the website.",
+      "You can reach us via email at OxVahanindia@gmail.com or use the Contact Us form on the website.",
   },
 ];
 

@@ -32,7 +32,7 @@ const SliderComponent = () => {
               <div className="absolute top-1/2 left-30 transform -translate-y-1/2 text-white max-w-[40%] max-[767px]:max-w-[100%] max-[767px]:p-5">
                 <h1 className="text-4xl mb-2">{slide.heading}</h1>
                 <p className="text-lg mb-4">{slide.paragraph}</p>
-                <button className="px-4 py-2 bg-[#A439AD] text-white rounded-md text-lg">
+                <button className="px-4 py-2 bg-[#0A0075] text-white rounded-md text-lg">
                   {slide.buttonText}
                 </button>
               </div>
