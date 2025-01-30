@@ -1,221 +1,286 @@
-import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/brand`;
+const CATEGORY_URL = `${import.meta.env.VITE_BACKEND_URL}/vehicle-categories`;
 
 const Brand = () => {
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const [editingBrand, setEditingBrand] = useState(null); // Editing brand
-  const [carBrands, setCarBrands] = useState([
-    {
-      id: 1,
-      img: "https://i.ibb.co/4SyGLBx/Ford.png",
-      name: "Ford",
-      createdOn: "01-09-2024",
-    },
-    {
-      id: 2,
-      img: "https://i.ibb.co/dkrdPBF/honda.png",
-      name: "Honda",
-      createdOn: "02-09-2024",
-    },
-    {
-      id: 3,
-      img: "https://i.ibb.co/jydp7FD/toyota.png",
-      name: "Toyota",
-      createdOn: "03-09-2024",
-    },
-    {
-      id: 4,
-      img: "https://i.ibb.co/wN3k5VC/volkswagen.png",
-      name: "Volkswagen",
-      createdOn: "04-09-2024",
-    },
-    {
-      id: 5,
-      img: "https://i.ibb.co/NVfG4f5/hyundai.png",
-      name: "Hyundai",
-      createdOn: "05-09-2024",
-    },
-    {
-      id: 6,
-      img: "https://i.ibb.co/YpGdcSW/Suzuki.png",
-      name: "Suzuki",
-      createdOn: "06-09-2024",
-    },
-    {
-      id: 7,
-      img: "https://i.ibb.co/qmDnjsq/audi.png",
-      name: "Audi",
-      createdOn: "07-09-2024",
-    },
-    {
-      id: 8,
-      img: "https://i.ibb.co/5x2PH7D/Nissan.png",
-      name: "Nissan",
-      createdOn: "08-09-2024",
-    },
-    {
-      id: 9,
-      img: "https://i.ibb.co/9whbp1M/tata.png",
-      name: "Tata",
-      createdOn: "09-09-2024",
-    },
-    {
-      id: 10,
-      img: "https://i.ibb.co/93MqDsr/Kia.png",
-      name: "Kia",
-      createdOn: "10-09-2024",
-    },
-    {
-      id: 11,
-      img: "https://i.ibb.co/jMXZ4Jj/bentley.png",
-      name: "Bentley",
-      createdOn: "11-09-2024",
-    },
-  ]);
+  const [carBrands, setCarBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [editingBrand, setEditingBrand] = useState(null);
+  const [formData, setFormData] = useState({ name: "", img: "", category: "" });
+  const [imagePreview, setImagePreview] = useState("");
 
-  const [formData, setFormData] = useState({
-    name: "",
-    img: "",
-  });
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Number of items per page
 
+  // Fetch brands and categories from backend
+  useEffect(() => {
+    axios
+      .get(API_URL)
+      .then((response) => setCarBrands(response.data))
+      .catch((error) => {
+        console.error("Error fetching brands:", error);
+        toast.error("Failed to fetch brands!");
+      });
+
+    axios
+      .get(CATEGORY_URL)
+      .then((response) => setCategories(response.data))
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+        toast.error("Failed to fetch categories!");
+      });
+  }, []);
+
+  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
-  // Handle adding or updating a car brand
-  const handleSaveBrand = () => {
-    if (editingBrand) {
-      // Update existing brand
-      setCarBrands(
-        carBrands.map((brand) =>
-          brand.id === editingBrand.id ? { ...brand, ...formData } : brand
-        )
-      );
-    } else {
-      // Add new car brand
-      const newBrand = {
-        id: carBrands.length + 1,
-        ...formData,
-        createdOn: new Date().toLocaleDateString(),
-      };
-      setCarBrands([...carBrands, newBrand]);
+  // Handle image change
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+      setFormData({ ...formData, img: file });
+    }
+  };
+
+  // Handle save (Add or Edit)
+  const handleSaveBrand = async () => {
+    const formDataToSend = new FormData();
+    formDataToSend.append("vehicle_make", formData.name);
+    formDataToSend.append("category", formData.category);
+
+    if (formData.img instanceof File) {
+      formDataToSend.append("img", formData.img);
     }
 
-    setShowModal(false);
-    setEditingBrand(null);
-    setFormData({ name: "", img: "" });
+    try {
+      if (editingBrand) {
+        await axios.put(`${API_URL}/${editingBrand._id}`, formDataToSend);
+        toast.success("Brand updated successfully!");
+      } else {
+        await axios.post(API_URL, formDataToSend);
+        toast.success("Brand added successfully!");
+      }
+      const response = await axios.get(API_URL);
+      setCarBrands(response.data);
+      setShowModal(false);
+      setEditingBrand(null);
+      setFormData({ name: "", img: "", category: "" });
+      setImagePreview("");
+    } catch (error) {
+      console.error("Error saving brand:", error);
+      toast.error("Failed to save brand!");
+    }
   };
 
-  // Handle edit action
-  const handleEdit = (brand) => {
-    setEditingBrand(brand);
-    setFormData(brand);
-    setShowModal(true);
+  // Handle delete
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      setCarBrands(carBrands.filter((brand) => brand._id !== id));
+      toast.success("Brand deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting brand:", error);
+      toast.error("Failed to delete brand!");
+    }
   };
 
-  // Handle delete action
-  const handleDelete = (id) => {
-    setCarBrands(carBrands.filter((brand) => brand.id !== id));
-  };
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = carBrands.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="p-10 bg-white box-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Car Brand List</h1>
+    <div className="p-10 bg-gray-100 min-h-screen">
+      <ToastContainer position="top-right" autoClose={3000} />
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Car Brand List</h1>
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center gap-2 transition duration-300"
           onClick={() => {
             setEditingBrand(null);
-            setFormData({ name: "", img: "" });
+            setFormData({ name: "", img: "", category: "" });
+            setImagePreview("");
             setShowModal(true);
           }}
         >
-          Add New Car Brand
+          <FaPlus /> Add New Car Brand
         </button>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
-          <thead className="bg-gray-100 text-gray-700">
+      <div className="overflow-x-auto bg-white rounded-lg shadow-xl">
+        <table className="w-full border-collapse">
+          <thead className="bg-topbar text-white sticky top-0 shadow-lg">
             <tr>
-              <th className="border border-gray-300 p-3 text-left">Brand Image</th>
-              <th className="border border-gray-300 p-3 text-left">Brand Name</th>
-              <th className="border border-gray-300 p-3 text-left">Created On</th>
-              <th className="border border-gray-300 p-3 text-center">Action</th>
+              <th className="p-4 text-left font-semibold">Brand Image</th>
+              <th className="p-4 text-left font-semibold">Brand Name</th>
+              <th className="p-4 text-left font-semibold">Category</th>
+              <th className="p-4 text-left font-semibold">Action</th>
             </tr>
           </thead>
           <tbody>
-            {carBrands.map((brand) => (
-              <tr key={brand.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 p-3">
+            {currentItems.map((brand, idx) => (
+              <tr
+                key={brand._id}
+                className="hover:bg-gray-50 transition duration-300 even:bg-white odd:bg-gray-50"
+              >
+                <td className="p-4 border-b text-sm">
                   <img
-                    src={brand.img}
-                    alt={brand.name}
-                    className="w-12 h-12 object-contain"
+                    src={`${import.meta.env.VITE_BACKEND_URL}${brand.img}`}
+                    alt={brand.vehicle_make}
+                    className="w-16 h-16 object-contain "
                   />
                 </td>
-                <td className="border border-gray-300 p-3">{brand.name}</td>
-                <td className="border border-gray-300 p-3">{brand.createdOn}</td>
-                <td className="border border-gray-300 p-3 text-center">
-                  <button
-                    className="text-blue-500 mr-2 hover:text-blue-700"
-                    onClick={() => handleEdit(brand)}
-                  >
-                    <FaEdit />
-                  </button>
-                  <button
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => handleDelete(brand.id)}
-                  >
-                    <FaTrash />
-                  </button>
+                <td className="p-4 border-b text-sm">{brand.vehicle_make}</td>
+                <td className="p-4 border-b text-sm">
+                  {brand.category?.vehicleCategory}
+                </td>
+                <td className="p-4 border-b text-sm">
+                  <div className="flex gap-4">
+                    <button
+                      className="text-blue-500 hover:text-blue-700 transition duration-300"
+                      onClick={() => {
+                        setEditingBrand(brand);
+                        setFormData({
+                          name: brand.vehicle_make,
+                          category: brand.category?._id,
+                          img: brand.img,
+                        });
+                        setImagePreview(brand.img);
+                        setShowModal(true);
+                      }}
+                    >
+                      <FaEdit size={18} />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-700 transition duration-300"
+                      onClick={() => handleDelete(brand._id)}
+                    >
+                      <FaTrash size={18} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
 
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-6 p-4">
+          <p className="text-sm text-gray-600">
+            Showing {indexOfFirstItem + 1} to{" "}
+            {Math.min(indexOfLastItem, carBrands.length)} of {carBrands.length}{" "}
+            entries
+          </p>
+          <div className="flex gap-2">
+            <button
+              className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-300 disabled:opacity-50"
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <button
+              className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-300 disabled:opacity-50"
+              onClick={() => paginate(currentPage + 1)}
+              disabled={indexOfLastItem >= carBrands.length}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-5 rounded box-shadow w-[90%] sm:w-[400px]">
-            <h2 className="text-xl font-bold mb-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg w-full max-w-md p-8">
+            <h2 className="text-2xl font-bold">
               {editingBrand ? "Edit Car Brand" : "Add New Car Brand"}
             </h2>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Brand Name</label>
+            <div className="mt-6">
+              <label className="block text-base pb-3 font-medium">
+                Brand Name
+              </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                placeholder="Enter brand name"
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Image URL</label>
-              <input
-                type="text"
-                name="img"
-                value={formData.img}
+            <div className="mt-4">
+              <label className="block text-base pb-3 font-medium">
+                Category
+              </label>
+              <select
+                name="category"
+                value={formData.category}
                 onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                placeholder="Enter image URL"
-              />
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat._id}>
+                    {cat.vehicleCategory}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="flex justify-end space-x-4">
+            <div className="mt-4">
+              <label className="cursor-pointer flex flex-col">
+                <span className="block text-sm font-medium mb-2">
+                  {imagePreview ? "Change image" : "Click to upload an image"}
+                </span>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-32 w-32 object-cover rounded-lg mt-2"
+                  />
+                ) : (
+                  <img
+                    src="https://i.ibb.co/smCK5q3/addimage.png"
+                    alt="Upload"
+                    className="w-[100px] mt-2"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
+            <div className="flex justify-end gap-4 mt-6">
               <button
-                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                className="px-6 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition duration-300"
                 onClick={() => setShowModal(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
                 onClick={handleSaveBrand}
               >
                 Save

@@ -1,96 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-const Category = () => {
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const [editingCategory, setEditingCategory] = useState(null); // Editing category
-  const [categories, setCategories] = useState([
-    {
-      id: 1,
-      category: "Biryani",
-      name: "Chicken Biryani",
-      createdOn: "01-09-2024",
-      status: true,
-    },
-    {
-      id: 2,
-      category: "Category",
-      name: "Idli sambar",
-      createdOn: "02-09-2024",
-      status: true,
-    },
-    {
-      id: 3,
-      category: "Rice",
-      name: "Curd rice",
-      createdOn: "03-09-2024",
-      status: true,
-    },
-    {
-      id: 4,
-      category: "Chicken",
-      name: "Chicken 65",
-      createdOn: "04-09-2024",
-      status: false,
-    },
-  ]);
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/vehicle-categories`;
 
+const Category = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     category: "",
     name: "",
     status: true,
+    image: null,
   });
+  const [imagePreview, setImagePreview] = useState(null); // For image preview
 
+  // 🔄 Fetch Categories from API
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // 📌 Handle Input Change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle adding or updating a category
-  const handleSaveCategory = () => {
-    if (editingCategory) {
-      // Update existing category
-      setCategories(
-        categories.map((cat) =>
-          cat.id === editingCategory.id ? { ...cat, ...formData } : cat
-        )
-      );
-    } else {
-      // Add new category
-      const newCategory = {
-        id: categories.length + 1,
-        ...formData,
-        createdOn: new Date().toLocaleDateString(),
-      };
-      setCategories([...categories, newCategory]);
+  // 📌 Handle Image Upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file }); // Store the file
+      setImagePreview(URL.createObjectURL(file)); // Set image preview
     }
-
-    setShowModal(false);
-    setEditingCategory(null);
-    setFormData({ category: "", name: "", status: true });
   };
 
-  // Handle edit action
+  // ✅ Save Category (Add / Update)
+  const handleSaveCategory = async () => {
+    if (!formData.category || !formData.category.trim()) {
+      return alert("Category name cannot be empty");
+    }
+  
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("vehicleCategory", formData.category);
+      if (formData.image) {
+        formDataToSend.append("img", formData.image);
+      }
+  
+      if (editingCategory) {
+        await axios.put(`${API_URL}/${editingCategory._id}`, formDataToSend);
+      } else {
+        await axios.post(API_URL, formDataToSend);
+      }
+  
+      fetchCategories();
+      setShowModal(false);
+      setEditingCategory(null);
+      setFormData({ category: "", name: "", status: true, image: null });
+      setImagePreview(null); // Reset image preview
+    } catch (error) {
+      console.error("Error saving category:", error);
+    }
+  };
+  
+
+  // ✏️ Edit Category
   const handleEdit = (category) => {
     setEditingCategory(category);
-    setFormData(category);
+    setFormData({
+      category: category.vehicleCategory,
+      name: category.name || "",
+      status: category.status,
+      image: null, // Reset image input
+    });
+    setImagePreview(
+      category.img
+        ? `${import.meta.env.VITE_BACKEND_URL}${category.img}`
+        : null
+    ); // Set existing image as preview
     setShowModal(true);
   };
 
-  // Handle delete action
-  const handleDelete = (id) => {
-    setCategories(categories.filter((cat) => cat.id !== id));
+  // ❌ Delete Category
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      fetchCategories();
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
   };
 
   return (
-    <div className="p-10  bg-white box-shadow">
+    <div className="p-10 bg-white box-shadow">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Category List</h1>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           onClick={() => {
             setEditingCategory(null);
-            setFormData({ category: "", name: "", status: true });
+            setFormData({ category: "", name: "", status: true, image: null });
+            setImagePreview(null); // Reset image preview
             setShowModal(true);
           }}
         >
@@ -98,38 +119,29 @@ const Category = () => {
         </button>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="border border-gray-300 p-3 text-left">Category</th>
-              <th className="border border-gray-300 p-3 text-left">Name</th>
-              <th className="border border-gray-300 p-3 text-left">
-                Created On
-              </th>
-              <th className="border border-gray-300 p-3 text-center">Status</th>
-              <th className="border border-gray-300 p-3 text-center">
-                Action
-              </th>
+              <th className="border border-gray-300 p-3 text-center">Image</th>
+              <th className="border border-gray-300 p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {categories.map((category) => (
-              <tr key={category.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 p-3">{category.category}</td>
-                <td className="border border-gray-300 p-3">{category.name}</td>
-                <td className="border border-gray-300 p-3">{category.createdOn}</td>
+              <tr key={category._id} className="hover:bg-gray-50">
+                <td className="border border-gray-300 p-3">
+                  {category.vehicleCategory}
+                </td>
                 <td className="border border-gray-300 p-3 text-center">
-                  <span
-                    className={`px-3 py-1 text-sm rounded ${
-                      category.status
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {category.status ? "Active" : "Inactive"}
-                  </span>
+                  {category.img && (
+                    <img
+                      src={`${import.meta.env.VITE_BACKEND_URL}${category.img}`}
+                      alt={category.vehicleCategory}
+                      className="h-auto w-16 object-cover "
+                    />
+                  )}
                 </td>
                 <td className="border border-gray-300 p-3 text-center">
                   <button
@@ -140,7 +152,7 @@ const Category = () => {
                   </button>
                   <button
                     className="text-red-500 hover:text-red-700"
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => handleDelete(category._id)}
                   >
                     <FaTrash />
                   </button>
@@ -151,10 +163,9 @@ const Category = () => {
         </table>
       </div>
 
-      {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-5 rounded  box-shadow w-[90%] sm:w-[400px]">
+          <div className="bg-white p-5 rounded box-shadow w-[90%] sm:w-[400px]">
             <h2 className="text-xl font-bold mb-4">
               {editingCategory ? "Edit Category" : "Add New Category"}
             </h2>
@@ -170,33 +181,40 @@ const Category = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                placeholder="Enter name"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="flex items-center space-x-2">
+              
+              <label className="cursor-pointer flex flex-col ">
+              <span className="block text-sm font-medium mb-2">
+                  {imagePreview ? "Change image" : "Click to upload an image"}
+                </span>
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-32 w-32 object-cover rounded-lg mt-2"
+                  />
+                ) : (
+                  <img
+                    src="https://i.ibb.co/smCK5q3/addimage.png"
+                    alt="Upload"
+                    className="w-[100px] mt-2"
+                  />
+                )}
+               
                 <input
-                  type="checkbox"
-                  name="status"
-                  checked={formData.status}
-                  onChange={() =>
-                    setFormData({ ...formData, status: !formData.status })
-                  }
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
                 />
-                <span>Active</span>
               </label>
             </div>
             <div className="flex justify-end space-x-4">
               <button
                 className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setImagePreview(null); // Reset image preview on cancel
+                }}
               >
                 Cancel
               </button>
