@@ -125,6 +125,7 @@ const Category = () => {
             <tr>
               <th className="border border-gray-300 p-3 text-left">Category</th>
               <th className="border border-gray-300 p-3 text-center">Image</th>
+              <th className="border border-gray-300 p-3 text-center">Slug</th>
               <th className="border border-gray-300 p-3 text-center">Action</th>
             </tr>
           </thead>
@@ -142,6 +143,9 @@ const Category = () => {
                       className="h-auto w-16 object-cover "
                     />
                   )}
+                </td>
+                <td className="border border-gray-300 p-3">
+                  {category.slug}
                 </td>
                 <td className="border border-gray-300 p-3 text-center">
                   <button
