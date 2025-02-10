@@ -111,7 +111,7 @@ const Dashboard = () => {
               <h5 className=" text-[#1273EB] text-4xl">25</h5>
               <p>Count</p>
             </div>
-            <img src="src/assets/growth.png" className="w-[200px]" srcset="" />
+            <img src="src/assets/growth.png" className="w-[200px]" srcSet="" />
           </div>
         </div>
         <div className="grid-cols-1">
@@ -124,7 +124,7 @@ const Dashboard = () => {
               <h5 className=" text-[#1273EB] text-4xl">25</h5>
               <p>Vehicles</p>
             </div>
-            <img src="src/assets/growth.png" className="w-[200px]" srcset="" />
+            <img src="src/assets/growth.png" className="w-[200px]" srcSet="" />
           </div>
         </div>
         <div className="grid-cols-1">
@@ -137,7 +137,7 @@ const Dashboard = () => {
               <h5 className=" text-[#1273EB] text-4xl">25</h5>
               <p>User</p>
             </div>
-            <img src="src/assets/growth.png" className="w-[200px]" srcset="" />
+            <img src="src/assets/growth.png" className="w-[200px]" srcSet="" />
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const API_URL = `${import.meta.env.VITE_BACKEND_URL}/brand`;
-const CATEGORY_URL = `${import.meta.env.VITE_BACKEND_URL}/vehicle-categories`;
+const CATEGORY_URL = `${import.meta.env.VITE_BACKEND_URL}/categories`;
 
 const Brand = () => {
   const [carBrands, setCarBrands] = useState([]);
@@ -17,9 +17,8 @@ const Brand = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Number of items per page
+  const [itemsPerPage] = useState(5);
 
-  // Fetch brands and categories from backend
   useEffect(() => {
     axios
       .get(API_URL)
@@ -59,7 +58,7 @@ const Brand = () => {
   // Handle save (Add or Edit)
   const handleSaveBrand = async () => {
     const formDataToSend = new FormData();
-    formDataToSend.append("vehicle_make", formData.name);
+    formDataToSend.append("brand", formData.name);
     formDataToSend.append("category", formData.category);
 
     if (formData.img instanceof File) {
@@ -124,65 +123,63 @@ const Brand = () => {
         </button>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto bg-white rounded-lg shadow-xl">
-        <table className="w-full border-collapse">
-          <thead className="bg-topbar text-white sticky top-0 shadow-lg">
-            <tr>
-              <th className="p-4 text-left font-semibold">Brand Image</th>
-              <th className="p-4 text-left font-semibold">Brand Name</th>
-              <th className="p-4 text-left font-semibold">Category</th>
-              <th className="p-4 text-left font-semibold">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((brand, idx) => (
-              <tr
-                key={brand._id}
-                className="hover:bg-gray-50 transition duration-300 even:bg-white odd:bg-gray-50"
-              >
-                <td className="p-4 border-b text-sm">
-                  <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}${brand.img}`}
-                    alt={brand.vehicle_make}
-                    className="w-16 h-16 object-contain "
-                  />
-                </td>
-                <td className="p-4 border-b text-sm">{brand.vehicle_make}</td>
-                <td className="p-4 border-b text-sm">
-                  {brand.category?.vehicleCategory}
-                </td>
-                <td className="p-4 border-b text-sm">
-                  <div className="flex gap-4">
-                    <button
-                      className="text-blue-500 hover:text-blue-700 transition duration-300"
-                      onClick={() => {
-                        setEditingBrand(brand);
-                        setFormData({
-                          name: brand.vehicle_make,
-                          category: brand.category?._id,
-                          img: brand.img,
-                        });
-                        setImagePreview(brand.img);
-                        setShowModal(true);
-                      }}
-                    >
-                      <FaEdit size={18} />
-                    </button>
-                    <button
-                      className="text-red-500 hover:text-red-700 transition duration-300"
-                      onClick={() => handleDelete(brand._id)}
-                    >
-                      <FaTrash size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <table className="w-full border-collapse">
+  <thead className="bg-topbar text-white sticky top-0 shadow-lg">
+    <tr>
+      <th className="p-4 text-left font-semibold">Brand Image</th>
+      <th className="p-4 text-left font-semibold">Brand Name</th>
+      <th className="p-4 text-left font-semibold">Category</th>
+      <th className="p-4 text-left font-semibold">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {currentItems.map((brand, idx) => (
+      <tr
+        key={brand._id}
+        className="hover:bg-gray-50 transition duration-300 even:bg-white odd:bg-gray-50"
+      >
+        <td className="p-4 border-b text-sm">
+          <img
+            src={`${import.meta.env.VITE_BACKEND_URL}${brand.img}`}
+            alt={brand.brand}
+            className="w-16 h-16 object-contain"
+          />
+        </td>
+        <td className="p-4 border-b text-sm">{brand.brand}</td>
+        <td className="p-4 border-b text-sm">{brand.category.category}</td>
 
-        {/* Pagination Controls */}
+        <td className="p-4 border-b text-sm">
+          <div className="flex gap-4">
+            <button
+              className="text-blue-500 hover:text-blue-700 transition duration-300"
+              onClick={() => {
+                setEditingBrand(brand);
+                setFormData({
+                  name: brand.brand,
+                  category: brand.category?._id, // Pass category._id here
+                  img: brand.img,
+                });
+                setImagePreview(brand.img);
+                setShowModal(true);
+              }}
+            >
+              <FaEdit size={18} />
+            </button>
+            <button
+              className="text-red-500 hover:text-red-700 transition duration-300"
+              onClick={() => handleDelete(brand._id)}
+            >
+              <FaTrash size={18} />
+            </button>
+          </div>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+
         <div className="flex justify-between items-center mt-6 p-4">
           <p className="text-sm text-gray-600">
             Showing {indexOfFirstItem + 1} to{" "}
@@ -207,6 +204,7 @@ const Brand = () => {
           </div>
         </div>
       </div>
+
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -241,7 +239,7 @@ const Brand = () => {
                 </option>
                 {categories.map((cat) => (
                   <option key={cat._id} value={cat._id}>
-                    {cat.vehicleCategory}
+                    {cat.category}
                   </option>
                 ))}
               </select>
